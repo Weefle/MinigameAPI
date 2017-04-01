@@ -16,6 +16,7 @@ import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.command.CommandHandler;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
+import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
 
@@ -35,9 +36,16 @@ public class MinigameAPI extends JavaPlugin {
 
 	private CommandHandler commandHandler;
 
+	private Config config;
+
 	@Override
 	public void onEnable() {
 		instance = this;
+
+		if(!config.getConfigFile().exists()) {
+			config.save();
+		}
+		config.load();
 
 		commandHandler = new CommandHandler(this);
 		commandHandler.register(CommandStart.class, new CommandStart());
@@ -114,6 +122,10 @@ public class MinigameAPI extends JavaPlugin {
 			}
 		}
 		return null;
+	}
+
+	public Config getMinigameConfig() {
+		return config;
 	}
 
 	public CommandHandler getCommandHandler() {
