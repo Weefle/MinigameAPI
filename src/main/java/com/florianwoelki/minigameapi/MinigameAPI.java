@@ -13,6 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.florianwoelki.minigameapi.api.Minigame;
+import com.florianwoelki.minigameapi.command.CommandHandler;
+import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
+import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
 
@@ -30,9 +33,15 @@ public class MinigameAPI extends JavaPlugin {
 	private boolean isBlockChangesEnabled = false;
 	private boolean isAllowSpectatorDeath = true;
 
+	private CommandHandler commandHandler;
+
 	@Override
 	public void onEnable() {
 		instance = this;
+
+		commandHandler = new CommandHandler(this);
+		commandHandler.register(CommandStart.class, new CommandStart());
+		commandHandler.register(CommandSetLobby.class, new CommandSetLobby());
 
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
@@ -105,6 +114,10 @@ public class MinigameAPI extends JavaPlugin {
 			}
 		}
 		return null;
+	}
+
+	public CommandHandler getCommandHandler() {
+		return commandHandler;
 	}
 
 	public void setBlockChangesEnabled(boolean isBlockChangesEnabled) {
