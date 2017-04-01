@@ -6,26 +6,26 @@ import com.florianwoelki.minigameapi.api.StopReason;
 
 public abstract class Manager {
 
-	public abstract void load();
+	public abstract void onLoad();
 
-	public abstract void unload();
+	public abstract void onUnload();
 
-	public void startLobbyPhase() {
+	public void onStartLobbyPhase() {
 	}
 
-	public void startGame() {
+	public void onStartGame() {
 	}
 
-	public void stopGame(StopReason stopReason) {
+	public void onStopGame(StopReason stopReason) {
 	}
 
-	public void joinPlayer(Player player) {
+	public void onPlayerJoin(Player player) {
 	}
 
-	public void leaveTimer(Player player) {
+	public void onPlayerQuit(Player player) {
 	}
 
-	public void updateTimer(int newTime) {
+	public void onUpdateTimer(int newTime) {
 	}
 
 }

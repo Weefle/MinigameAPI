@@ -18,6 +18,7 @@ import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
+import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
 
 public class MinigameAPI extends JavaPlugin {
@@ -51,6 +52,7 @@ public class MinigameAPI extends JavaPlugin {
 		commandHandler.register(CommandStart.class, new CommandStart());
 		commandHandler.register(CommandSetLobby.class, new CommandSetLobby());
 
+		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
@@ -94,14 +96,14 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void addManager(String name, Manager manager) {
 		MANAGERS.put(name, manager);
-		manager.load();
+		manager.onLoad();
 	}
 
 	public void removeManager(String name) {
 		Manager manager = (Manager) MANAGERS.get(name);
 
 		if(manager != null) {
-			manager.unload();
+			manager.onUnload();
 			MANAGERS.remove(name);
 		}
 	}

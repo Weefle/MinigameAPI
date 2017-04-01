@@ -7,13 +7,13 @@ public class DatabaseManager extends Manager {
 	private Database database;
 
 	@Override
-	public void load() {
+	public void onLoad() {
 		database = new Database();
 		database.connect();
 	}
 
 	@Override
-	public void unload() {
+	public void onUnload() {
 		database.disconnect();
 	}
 
