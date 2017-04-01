@@ -1,0 +1,6 @@
+name: MinigameAPI
+version: 0.0.1-SNAPSHOT
+author: Florian Woelki
+description: Simple and lightweight MinigameAPI for Spigot.
+
+main: com.florianwoelki.minigameapi.MinigameAPI
