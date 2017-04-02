@@ -20,7 +20,8 @@ public class CommandAchievements implements CommandExecutor {
 	@Command(command = "achievements", sender = Sender.PLAYER)
 	public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
 		Player player = (Player) sender;
-		
+
+		achievementHandler.openInventory(player);
 		return false;
 	}
 
