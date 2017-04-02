@@ -7,17 +7,17 @@ public class AchievementHandler {
 
 	private List<Achievement> achievementList;
 
-	public AchievementHandler(Achievement... achievements) {
+	public AchievementHandler() {
 		this.achievementList = new ArrayList<>();
-		if(achievements != null) {
-			register(achievements);
-			initInventory();
+		for(AchievementType achievementType : AchievementType.values()) {
+			achievementList.add(new Achievement(this, achievementType));
 		}
+		initInventory();
 	}
 
 	public void register(Achievement... achievements) {
 		for(Achievement achievement : achievements) {
-			achievement.register(this);
+			achievementList.add(achievement);
 		}
 	}
 
