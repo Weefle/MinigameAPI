@@ -9,12 +9,15 @@ public class DatabaseManager extends Manager {
 	@Override
 	public void onLoad() {
 		database = new Database();
-		database.connect();
 	}
 
 	@Override
 	public void onUnload() {
-		database.disconnect();
+		database.closeConnection();
+	}
+
+	public Database getDatabase() {
+		return database;
 	}
 
 }
