@@ -47,7 +47,9 @@ public class LobbyListener implements Listener {
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if(event.getTo().getY() < 0) {
-			event.getPlayer().teleport(LocationManager.getInstance().getLocation("Lobby"));
+			if(LocationManager.getInstance().getLocation("Lobby") != null) {
+				event.getPlayer().teleport(LocationManager.getInstance().getLocation("Lobby"));			
+			}
 		}
 	}
 
@@ -59,8 +61,10 @@ public class LobbyListener implements Listener {
 			player.sendMessage(" ");
 		}
 
-		player.teleport(LocationManager.getInstance().getLocation("Lobby"));
-
+		if(LocationManager.getInstance().getLocation("Lobby") != null) {
+			player.teleport(LocationManager.getInstance().getLocation("Lobby"));
+		}
+		
 		if(MinigameAPI.getInstance().getGame().getGameState() == GameState.INGAME) {
 			for(Player spectator : SpectatorManager.getSpectators()) {
 				player.hidePlayer(spectator);

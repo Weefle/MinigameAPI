@@ -59,6 +59,7 @@ public class MinigameAPI extends JavaPlugin {
 	public void onEnable() {
 		instance = this;
 
+		config = new Config();
 		if(!config.getConfigFile().exists()) {
 			config.save();
 		}
@@ -69,12 +70,12 @@ public class MinigameAPI extends JavaPlugin {
 		commandHandler.register(CommandSetLobby.class, new CommandSetLobby());
 		commandHandler.register(CommandWorldTeleport.class, new CommandWorldTeleport());
 
+		game = new Game();
+		game.setGameState(GameState.LOBBY_WITH_NOY_PLAYERS);
+		
 		gameTimer = new GameTimer();
 		gameTimer.resetTime();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameTimer, 20L, 20L);
-
-		game = new Game();
-		game.setGameState(GameState.LOBBY_WITH_NOY_PLAYERS);
 
 		getServer().getPluginManager().registerEvents(new SpectatorListener(), this);
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);

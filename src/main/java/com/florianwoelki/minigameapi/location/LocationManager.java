@@ -57,14 +57,17 @@ public class LocationManager {
 	}
 
 	public Location getLocation(String path) {
-		String locationString = configuration.getString(path);
-		World world = Bukkit.getWorld(locationString.split(",")[0]);
-		double x = Double.valueOf(locationString.split(",")[1]);
-		double y = Double.valueOf(locationString.split(",")[2]);
-		double z = Double.valueOf(locationString.split(",")[3]);
-		double yaw = Double.valueOf(locationString.split(",")[4]);
-		double pitch = Double.valueOf(locationString.split(",")[5]);
-		return new Location(world, x, y, z, (float) yaw, (float) pitch);
+		if(configuration.getString(path) != null) {
+			String locationString = configuration.getString(path);
+			World world = Bukkit.getWorld(locationString.split(",")[0]);
+			double x = Double.valueOf(locationString.split(",")[1]);
+			double y = Double.valueOf(locationString.split(",")[2]);
+			double z = Double.valueOf(locationString.split(",")[3]);
+			double yaw = Double.valueOf(locationString.split(",")[4]);
+			double pitch = Double.valueOf(locationString.split(",")[5]);
+			return new Location(world, x, y, z, (float) yaw, (float) pitch);	
+		}
+		return null;
 	}
 
 	public void save() {
