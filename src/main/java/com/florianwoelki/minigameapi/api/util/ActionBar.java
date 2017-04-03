@@ -11,6 +11,9 @@ public class ActionBar {
 
 	private String message;
 
+	public ActionBar() {
+	}
+
 	public ActionBar(String message) {
 		this.message = message;
 	}

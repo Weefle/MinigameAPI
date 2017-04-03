@@ -40,6 +40,7 @@ import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.location.LocationManager;
 import com.florianwoelki.minigameapi.messenger.Messenger;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
+import com.florianwoelki.minigameapi.util.ActionBarBroadcaster;
 
 public class LobbyListener implements Listener {
 
@@ -93,6 +94,8 @@ public class LobbyListener implements Listener {
 		for(Manager manager : MinigameAPI.getInstance().getManagers()) {
 			manager.onPlayerJoin(player);
 		}
+
+		new ActionBarBroadcaster(player).startBroadcast();
 
 		event.setJoinMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §ejoined the server. §8(§a" + Bukkit.getOnlinePlayers().size() + "§8/§a" + Bukkit.getMaxPlayers() + "§8)");
 	}
