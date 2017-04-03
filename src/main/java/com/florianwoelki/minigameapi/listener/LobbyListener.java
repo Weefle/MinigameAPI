@@ -9,11 +9,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -22,13 +27,19 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
+import com.florianwoelki.minigameapi.api.StopReason;
+import com.florianwoelki.minigameapi.config.ConfigData;
+import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.location.LocationManager;
 import com.florianwoelki.minigameapi.messenger.Messenger;
+import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 
 public class LobbyListener implements Listener {
 
@@ -49,6 +60,30 @@ public class LobbyListener implements Listener {
 
 		player.teleport(LocationManager.getInstance().getLocation("Lobby"));
 
+		if(MinigameAPI.getInstance().getGame().getGameState() == GameState.INGAME) {
+			for(Player spectator : SpectatorManager.getSpectators()) {
+				player.hidePlayer(spectator);
+			}
+
+			event.setJoinMessage(null);
+			SpectatorManager.joinSpectator(player, true);
+			MinigameAPI.getInstance().giveLobbyItems(player);
+			for(Manager manager : MinigameAPI.getInstance().getManagers()) {
+				manager.onPlayerJoin(player);
+			}
+			return;
+		}
+
+		if(MinigameAPI.getInstance().getGame().getGameState() == GameState.LOBBY_WITH_NOY_PLAYERS) {
+			if(Bukkit.getOnlinePlayers().size() >= ConfigData.minimumPlayers) {
+				MinigameAPI.getInstance().getGame().startLobbyPhase();
+			}
+
+			MinigameAPI.getInstance().giveLobbyItems(player);
+		} else {
+			MinigameAPI.getInstance().giveLobbyItems(player);
+		}
+
 		player.setFoodLevel(20);
 		player.setHealth(20d);
 		player.setExp(0f);
@@ -67,18 +102,75 @@ public class LobbyListener implements Listener {
 		Player player = event.getPlayer();
 		event.setQuitMessage(null);
 
+		if(!MinigameAPI.getInstance().getGame().isGameStarted()) {
+			if(MinigameAPI.getInstance().getGame().getGameState() != GameState.INGAME) {
+				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §6has left the server. §8(§a" + (Bukkit.getOnlinePlayers().size() - 1) + "§8/§a" + Bukkit.getMaxPlayers() + "§8)");
+			} else {
+				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §6gave up.");
+			}
+
+			for(Manager manager : MinigameAPI.getInstance().getManagers()) {
+				manager.onPlayerQuit(player);
+			}
+			return;
+		}
+
 		for(Manager manager : MinigameAPI.getInstance().getManagers()) {
 			manager.onPlayerQuit(player);
+		}
+
+		if(SpectatorManager.isSpectator(player)) {
+			SpectatorManager.leaveSpectator(player);
+		}
+
+		if(MinigameAPI.getInstance().getGame().isGameStarted() && MinigameAPI.getInstance().getIngamePlayers().size() < 2) {
+			if(MinigameAPI.getInstance().getMinigame() != null) {
+				MinigameAPI.getInstance().getMinigame().stopGame(StopReason.NO_PLAYERS);
+			}
 		}
 	}
 
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
-		Player player = event.getPlayer();
 		event.setLeaveMessage(null);
+	}
 
-		for(Manager manager : MinigameAPI.getInstance().getManagers()) {
-			manager.onPlayerQuit(player);
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Player player = event.getPlayer();
+
+		if(!MinigameAPI.getInstance().getGame().isGameStarted() || SpectatorManager.isSpectator(player)) {
+			MinigameAPI.getInstance().giveLobbyItems(player);
+		}
+
+		if(MinigameAPI.getInstance().getGame().isGameStarted() && SpectatorManager.isSpectator(player) && MinigameAPI.getInstance().isAllowSpectatorDeath()) {
+			player.setAllowFlight(true);
+		}
+	}
+
+	@EventHandler
+	public void onBlockBreak(BlockBreakEvent event) {
+		Player player = event.getPlayer();
+
+		if(player.getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+
+		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Player player = event.getPlayer();
+
+		if(player.getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+
+		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
 		}
 	}
 
@@ -93,6 +185,10 @@ public class LobbyListener implements Listener {
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
+
+		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler
@@ -106,6 +202,10 @@ public class LobbyListener implements Listener {
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
+
+		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler
@@ -114,6 +214,56 @@ public class LobbyListener implements Listener {
 
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
+		}
+
+		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onTeleport(PlayerTeleportEvent event) {
+		if(SpectatorManager.isSpectator(event.getPlayer())) {
+			event.getPlayer().setAllowFlight(true);
+		}
+	}
+
+	@EventHandler
+	public void onWorldChange(PlayerChangedWorldEvent event) {
+		if(SpectatorManager.isSpectator(event.getPlayer())) {
+			event.getPlayer().setAllowFlight(true);
+		}
+	}
+
+	@EventHandler(priority = EventPriority.LOW)
+	public void onEntityDamage(EntityDamageEvent event) {
+		if(event.isCancelled()) {
+			return;
+		}
+
+		if(!MinigameAPI.getInstance().getGame().isGameStarted()) {
+			event.setCancelled(true);
+			return;
+		}
+
+		if(event.getEntity() instanceof Player) {
+			Player player = (Player) event.getEntity();
+			if(SpectatorManager.isSpectator(player)) {
+				event.setCancelled(true);
+				player.setFireTicks(0);
+				return;
+			}
+		}
+
+		if(event instanceof EntityDamageByEntityEvent) {
+			EntityDamageByEntityEvent event2 = (EntityDamageByEntityEvent) event;
+			if(event2.getDamager() instanceof Player) {
+				Player damager = (Player) event2.getDamager();
+				if(SpectatorManager.isSpectator(damager)) {
+					damager.setFireTicks(0);
+					event.setCancelled(true);
+				}
+			}
 		}
 	}
 
@@ -124,6 +274,10 @@ public class LobbyListener implements Listener {
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
 		}
+
+		if(!MinigameAPI.getInstance().getGame().isGameStarted() || SpectatorManager.isSpectator(player)) {
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler(priority = EventPriority.LOW)
@@ -132,6 +286,10 @@ public class LobbyListener implements Listener {
 
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
+		}
+
+		if(!MinigameAPI.getInstance().getGame().isGameStarted() || SpectatorManager.isSpectator(player)) {
+			event.setCancelled(true);
 		}
 	}
 
@@ -149,6 +307,10 @@ public class LobbyListener implements Listener {
 		}
 
 		Player player = (Player) event.getEntity();
+
+		if(!MinigameAPI.getInstance().getGame().isGameStarted() || SpectatorManager.isSpectator(player)) {
+			event.setCancelled(true);
+		}
 	}
 
 	@EventHandler
@@ -169,6 +331,10 @@ public class LobbyListener implements Listener {
 			return;
 		}
 
+		if(MinigameAPI.getInstance().getGame().isGameStarted() && SpectatorManager.isSpectator(player)) {
+			return;
+		}
+
 		switch(event.getAction()) {
 		case DROP_ALL_CURSOR:
 		case DROP_ALL_SLOT:
@@ -182,12 +348,43 @@ public class LobbyListener implements Listener {
 	}
 
 	@EventHandler
+	public void onPlayerInteractMagmaCream(PlayerInteractEvent event) {
+		Player player = event.getPlayer();
+		ItemStack item = event.getItem();
+
+		if(player.getGameMode() == GameMode.CREATIVE) {
+			return;
+		}
+
+		if(event.getAction() != Action.PHYSICAL && item != null && !MinigameAPI.getInstance().getGame().isGameStarted()) {
+			if(item.getType() == Material.MAGMA_CREAM) {
+				player.kickPlayer("");
+			}
+		}
+	}
+
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
 
 		if(player.getGameMode().equals(GameMode.CREATIVE)) {
 			return;
+		}
+
+		if(event.getAction() != Action.PHYSICAL && item != null && (MinigameAPI.getInstance().getGame().isGameStarted() || SpectatorManager.isSpectator(player))) {
+			event.setCancelled(true);
+			if(item.getType() == Material.MAGMA_CREAM) {
+				player.kickPlayer("");
+			} else if(item.getType() == Material.COMPASS && MinigameAPI.getInstance().getGame().getGameState() == GameState.INGAME) {
+				player.openInventory(SpectatorManager.getSpectatorInventory().getInventory());
+			} else {
+				event.setCancelled(false);
+			}
+		}
+
+		if(SpectatorManager.isSpectator(player)) {
+			event.setCancelled(true);
 		}
 	}
 
