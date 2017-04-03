@@ -2,6 +2,7 @@ package com.florianwoelki.minigameapi;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -14,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.florianwoelki.minigameapi.api.Minigame;
+import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
 import com.florianwoelki.minigameapi.command.CommandHandler;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
@@ -22,9 +24,12 @@ import com.florianwoelki.minigameapi.command.admin.CommandWorldTeleport;
 import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.game.Game;
+import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
+import com.florianwoelki.minigameapi.team.TeamManager;
+import com.florianwoelki.minigameapi.team.TeamScoreboardManager;
 
 public class MinigameAPI extends JavaPlugin {
 
@@ -66,6 +71,7 @@ public class MinigameAPI extends JavaPlugin {
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameTimer, 20L, 20L);
 
 		game = new Game();
+		game.setGameState(GameState.LOBBY_WITH_NOY_PLAYERS);
 
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -74,6 +80,8 @@ public class MinigameAPI extends JavaPlugin {
 	@Override
 	public void onDisable() {
 		instance = null;
+		game.stopGame(StopReason.SERVER_STOP);
+		game.setGameState(GameState.NONE);
 
 		for(World world : Bukkit.getWorlds()) {
 			Bukkit.unloadWorld(world, false);
@@ -91,6 +99,18 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void enableDatabase() {
 		addManager("database", new DatabaseManager());
+	}
+
+	public void enableTeams() {
+		addManager("teams", new TeamManager());
+	}
+
+	public void enableTeamScoreboard() {
+		addManager("team_scoreboard", new TeamScoreboardManager());
+	}
+
+	public List<Player> getIngamePlayers() {
+		return null;
 	}
 
 	public World requestMap(String mapName) {
