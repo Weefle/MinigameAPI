@@ -1,5 +1,6 @@
 package com.florianwoelki.minigameapi;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +29,8 @@ import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
+import com.florianwoelki.minigameapi.spectator.SpectatorListener;
+import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 import com.florianwoelki.minigameapi.team.TeamManager;
 import com.florianwoelki.minigameapi.team.TeamScoreboardManager;
 
@@ -73,6 +76,7 @@ public class MinigameAPI extends JavaPlugin {
 		game = new Game();
 		game.setGameState(GameState.LOBBY_WITH_NOY_PLAYERS);
 
+		getServer().getPluginManager().registerEvents(new SpectatorListener(), this);
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
@@ -110,7 +114,13 @@ public class MinigameAPI extends JavaPlugin {
 	}
 
 	public List<Player> getIngamePlayers() {
-		return null;
+		List<Player> players = new ArrayList<>();
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			players.add(onlinePlayer);
+		}
+
+		players.removeAll(SpectatorManager.getSpectators());
+		return players;
 	}
 
 	public World requestMap(String mapName) {
@@ -159,6 +169,15 @@ public class MinigameAPI extends JavaPlugin {
 			}
 		}
 		return null;
+	}
+
+	public void giveSpectatorItems(Player player, boolean isJoined) {
+		player.getInventory().setArmorContents(null);
+		if(isJoined) {
+			player.getInventory().setItem(0, new ItemBuilder(Material.COMPASS).setName("§7§oTeleporter").build());
+		}
+		player.getInventory().setItem(8, new ItemBuilder(Material.MAGMA_CREAM).setName("§7Zurück zur §eLobby").build());
+		player.updateInventory();
 	}
 
 	public void giveLobbyItems(Player player) {
