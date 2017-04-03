@@ -7,18 +7,22 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.florianwoelki.minigameapi.api.Minigame;
+import com.florianwoelki.minigameapi.api.util.ItemBuilder;
 import com.florianwoelki.minigameapi.command.CommandHandler;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.command.admin.CommandWorldTeleport;
 import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
+import com.florianwoelki.minigameapi.game.Game;
+import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
 
@@ -40,6 +44,9 @@ public class MinigameAPI extends JavaPlugin {
 
 	private Config config;
 
+	private Game game;
+	private GameTimer gameTimer;
+
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -53,6 +60,12 @@ public class MinigameAPI extends JavaPlugin {
 		commandHandler.register(CommandStart.class, new CommandStart());
 		commandHandler.register(CommandSetLobby.class, new CommandSetLobby());
 		commandHandler.register(CommandWorldTeleport.class, new CommandWorldTeleport());
+
+		gameTimer = new GameTimer();
+		gameTimer.resetTime();
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameTimer, 20L, 20L);
+
+		game = new Game();
 
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -126,6 +139,19 @@ public class MinigameAPI extends JavaPlugin {
 			}
 		}
 		return null;
+	}
+
+	public void giveLobbyItems(Player player) {
+		player.getInventory().setItem(8, new ItemBuilder(Material.MAGMA_CREAM).setName("§7Back to §alobby").build());
+		player.updateInventory();
+	}
+
+	public Game getGame() {
+		return game;
+	}
+
+	public GameTimer getGameTimer() {
+		return gameTimer;
 	}
 
 	public Config getMinigameConfig() {
