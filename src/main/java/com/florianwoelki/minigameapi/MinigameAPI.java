@@ -95,7 +95,7 @@ public class MinigameAPI extends JavaPlugin {
 	}
 
 	public void initializeMinigame(Minigame minigame) {
-		if(minigame != null) {
+		if(minigame == null) {
 			throw new RuntimeException("Already initialized!");
 		}
 
