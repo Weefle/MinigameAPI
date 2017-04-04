@@ -28,6 +28,8 @@ import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.game.Game;
 import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.game.GameTimer;
+import com.florianwoelki.minigameapi.kit.Kit;
+import com.florianwoelki.minigameapi.kit.KitManager;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
@@ -102,6 +104,10 @@ public class MinigameAPI extends JavaPlugin {
 		}
 
 		this.minigame = minigame;
+	}
+
+	public void enableKits(Kit... kits) {
+		addManager("kits", new KitManager(kits));
 	}
 
 	public void enableDatabase() {
