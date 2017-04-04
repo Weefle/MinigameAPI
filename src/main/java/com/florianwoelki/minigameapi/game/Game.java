@@ -59,6 +59,11 @@ public class Game {
 			manager.onStartGame();
 		}
 
+		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+			onlinePlayer.setLevel(0);
+			onlinePlayer.setExp(0);
+		}
+
 		gameState = GameState.INGAME;
 		MinigameAPI.getInstance().getMinigame().startGame();
 	}

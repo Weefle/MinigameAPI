@@ -1,9 +1,7 @@
 package com.florianwoelki.minigameapi.command.admin;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.command.Command;
@@ -22,10 +20,6 @@ public class CommandStart implements CommandExecutor {
 		} else if(MinigameAPI.getInstance().getGame().getGameState() == GameState.LOBBY) {
 			MinigameAPI.getInstance().getGame().startGame(true);
 			Messenger.getInstance().message(sender, MessageType.GOOD, "You started the game.");
-			for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-				onlinePlayer.setLevel(0);
-				onlinePlayer.setExp(0);
-			}
 		}
 		return false;
 	}
