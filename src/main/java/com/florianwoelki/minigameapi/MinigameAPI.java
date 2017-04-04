@@ -19,6 +19,7 @@ import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
 import com.florianwoelki.minigameapi.command.CommandHandler;
+import com.florianwoelki.minigameapi.command.admin.CommandSetGameArea;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.command.admin.CommandWorldTeleport;
@@ -69,10 +70,11 @@ public class MinigameAPI extends JavaPlugin {
 		commandHandler.register(CommandStart.class, new CommandStart());
 		commandHandler.register(CommandSetLobby.class, new CommandSetLobby());
 		commandHandler.register(CommandWorldTeleport.class, new CommandWorldTeleport());
+		commandHandler.register(CommandSetGameArea.class, new CommandSetGameArea());
 
 		game = new Game();
 		game.setGameState(GameState.LOBBY_WITH_NOY_PLAYERS);
-		
+
 		gameTimer = new GameTimer();
 		gameTimer.resetTime();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, gameTimer, 20L, 20L);

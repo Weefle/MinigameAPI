@@ -65,9 +65,31 @@ public class LocationManager {
 			double z = Double.valueOf(locationString.split(",")[3]);
 			double yaw = Double.valueOf(locationString.split(",")[4]);
 			double pitch = Double.valueOf(locationString.split(",")[5]);
-			return new Location(world, x, y, z, (float) yaw, (float) pitch);	
+			return new Location(world, x, y, z, (float) yaw, (float) pitch);
 		}
 		return null;
+	}
+
+	public boolean isInsideLocation(Location location, String path) {
+		Location loc1 = getBlockLocation(path + ".Pos1");
+		Location loc2 = getBlockLocation(path + ".Pos2");
+
+		if(loc1.getWorld() != loc2.getWorld()) {
+			return false;
+		}
+
+		int minX = Math.min(loc1.getBlockX(), loc2.getBlockX());
+		int minY = Math.min(loc1.getBlockY(), loc2.getBlockY());
+		int minZ = Math.min(loc1.getBlockZ(), loc2.getBlockZ());
+
+		int maxX = Math.max(loc1.getBlockX(), loc2.getBlockX());
+		int maxY = Math.max(loc1.getBlockY(), loc2.getBlockY());
+		int maxZ = Math.max(loc1.getBlockZ(), loc2.getBlockZ());
+
+		if(location.getBlockX() >= minX && location.getBlockX() <= maxX && location.getBlockY() >= minY && location.getBlockY() <= maxY && location.getBlockZ() >= minZ && location.getBlockZ() <= maxZ) {
+			return true;
+		}
+		return false;
 	}
 
 	public void save() {

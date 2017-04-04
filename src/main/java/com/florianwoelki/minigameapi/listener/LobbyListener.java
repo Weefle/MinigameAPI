@@ -13,6 +13,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntityInteractEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
@@ -38,6 +39,7 @@ import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.config.ConfigData;
 import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.location.LocationManager;
+import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 import com.florianwoelki.minigameapi.util.ActionBarBroadcaster;
@@ -48,7 +50,16 @@ public class LobbyListener implements Listener {
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if(event.getTo().getY() < 0) {
 			if(LocationManager.getInstance().getLocation("Lobby") != null) {
-				event.getPlayer().teleport(LocationManager.getInstance().getLocation("Lobby"));			
+				event.getPlayer().teleport(LocationManager.getInstance().getLocation("Lobby"));
+			}
+		}
+
+		if(MinigameAPI.getInstance().getGame().isGameStarted()) {
+			if(LocationManager.getInstance().getLocation("GameArea.Pos1") != null) {
+				if(LocationManager.getInstance().isInsideLocation(event.getTo(), "GameArea")) {
+					event.getPlayer().teleport(event.getFrom());
+					Messenger.getInstance().message(event.getPlayer(), MessageType.BAD, "You can't leave the game area.");
+				}
 			}
 		}
 	}
@@ -64,7 +75,7 @@ public class LobbyListener implements Listener {
 		if(LocationManager.getInstance().getLocation("Lobby") != null) {
 			player.teleport(LocationManager.getInstance().getLocation("Lobby"));
 		}
-		
+
 		if(MinigameAPI.getInstance().getGame().getGameState() == GameState.INGAME) {
 			for(Player spectator : SpectatorManager.getSpectators()) {
 				player.hidePlayer(spectator);
@@ -177,6 +188,13 @@ public class LobbyListener implements Listener {
 		}
 
 		if(SpectatorManager.isSpectator(player) || !MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
+			event.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onEntityExplode(EntityExplodeEvent event) {
+		if(!MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
 			event.setCancelled(true);
 		}
 	}
