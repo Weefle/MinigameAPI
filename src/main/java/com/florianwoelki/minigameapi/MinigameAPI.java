@@ -32,6 +32,8 @@ import com.florianwoelki.minigameapi.kit.Kit;
 import com.florianwoelki.minigameapi.kit.KitManager;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.player.PlayerWrapper;
+import com.florianwoelki.minigameapi.skill.Skill;
+import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 import com.florianwoelki.minigameapi.team.TeamManager;
@@ -108,6 +110,10 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void enableKits(Kit... kits) {
 		addManager("kits", new KitManager(kits));
+	}
+
+	public void enableSkills(Skill... skills) {
+		addManager("skills", new SkillManager(skills));
 	}
 
 	public void enableDatabase() {
