@@ -20,9 +20,13 @@ If you are posting a error, please provide this information above the error.
 - Statistics
 - Minigame area control
 - 1.8 features (Title, Tablist, ActionBar)
+- Map Voting
+- Kits
+- Skills
 
 ## Commands
 - /setlobby - Set the Lobby for the Minigame
 - /worldtp - Teleports you to a world
 - /setgamearea - Set the game area of the Minigame
-- /achievements - Open achievements inventory, if it is enabled.
+- /achievements - Open achievements inventory, if it is enabled
+- /votemap <mapname> - Vote for a map, if it is enabled
