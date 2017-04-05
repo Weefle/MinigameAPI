@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
@@ -17,7 +18,10 @@ public class SkillManager extends Manager {
 	private final List<Skill> skills = new ArrayList<>();
 	private final Map<UUID, Long> cooldown = new HashMap<>();
 
+	private SkillListener skillListener;
+
 	public SkillManager(Skill... skills) {
+		this.skillListener = new SkillListener(this);
 		for(Skill skill : skills) {
 			this.skills.add(skill);
 		}
@@ -25,11 +29,12 @@ public class SkillManager extends Manager {
 
 	@Override
 	public void onLoad() {
-		Bukkit.getPluginManager().registerEvents(new SkillListener(this), MinigameAPI.getInstance());
+		Bukkit.getPluginManager().registerEvents(skillListener, MinigameAPI.getInstance());
 	}
 
 	@Override
 	public void onUnload() {
+		HandlerList.unregisterAll(skillListener);
 	}
 
 	public void addSkill(Skill skill) {
@@ -39,7 +44,7 @@ public class SkillManager extends Manager {
 	public List<Skill> getSkills() {
 		return skills;
 	}
-	
+
 	public Map<UUID, Long> getCooldown() {
 		return cooldown;
 	}
