@@ -23,6 +23,7 @@ import com.florianwoelki.minigameapi.command.admin.CommandSetGameArea;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.command.admin.CommandWorldTeleport;
+import com.florianwoelki.minigameapi.command.user.CommandVoteMap;
 import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.game.Game;
@@ -38,6 +39,7 @@ import com.florianwoelki.minigameapi.spectator.SpectatorListener;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 import com.florianwoelki.minigameapi.team.TeamManager;
 import com.florianwoelki.minigameapi.team.TeamScoreboardManager;
+import com.florianwoelki.minigameapi.vote.VoteManager;
 
 public class MinigameAPI extends JavaPlugin {
 
@@ -106,6 +108,12 @@ public class MinigameAPI extends JavaPlugin {
 		}
 
 		this.minigame = minigame;
+	}
+
+	public void enableMapVoting() {
+		VoteManager voteManager = new VoteManager();
+		addManager("map_voting", voteManager);
+		commandHandler.register(CommandVoteMap.class, new CommandVoteMap(voteManager));
 	}
 
 	public void enableKits(Kit... kits) {
