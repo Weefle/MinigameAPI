@@ -47,6 +47,10 @@ public class SpectatorListener implements Listener {
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
+			if(event.getItem() == null) {
+				return;
+			}
+			
 			if(event.getItem().getType().equals(Material.COMPASS)) {
 				event.getPlayer().openInventory(SpectatorManager.getSpectatorInventory().getInventory());
 				SpectatorManager.getSpectatorInventory().updateInventory();

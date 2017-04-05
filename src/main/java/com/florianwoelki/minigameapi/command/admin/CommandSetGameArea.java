@@ -25,7 +25,7 @@ public class CommandSetGameArea implements CommandExecutor {
 		Player player = (Player) sender;
 
 		if(args.length == 0) {
-			if(position1.containsKey(player) && position2.containsKey(player)) {
+			if(!position1.containsKey(player) || !position2.containsKey(player)) {
 				Messenger.getInstance().message(player, MessageType.BAD, "First, set the positions with /setgamearea pos1 | pos2");
 				return false;
 			}

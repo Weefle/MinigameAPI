@@ -122,9 +122,9 @@ public class LobbyListener implements Listener {
 
 		if(!MinigameAPI.getInstance().getGame().isGameStarted()) {
 			if(MinigameAPI.getInstance().getGame().getGameState() != GameState.INGAME) {
-				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §6has left the server. §8(§a" + (Bukkit.getOnlinePlayers().size() - 1) + "§8/§a" + Bukkit.getMaxPlayers() + "§8)");
+				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §ehas left the server. §8(§a" + (Bukkit.getOnlinePlayers().size() - 1) + "§8/§a" + Bukkit.getMaxPlayers() + "§8)");
 			} else {
-				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §6gave up.");
+				event.setQuitMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §egave up.");
 			}
 
 			for(Manager manager : MinigameAPI.getInstance().getManagers()) {

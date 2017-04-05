@@ -50,7 +50,7 @@ public class DynamicCommand extends org.bukkit.command.Command implements Plugin
 				return false;
 			}
 
-			return (boolean) owner.invoke(commandExecutor, sender, this, commandLabel, args);
+			return (boolean) owner.invoke(commandExecutor, commandSender, this, commandLabel, args);
 		} catch(Exception e) {
 			e.printStackTrace();
 			return false;

@@ -6,13 +6,14 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
-import com.florianwoelki.minigameapi.player.PlayerWrapper;
 import com.florianwoelki.minigameapi.team.TeamManager;
 
 public class SpectatorInventory {
@@ -41,9 +42,12 @@ public class SpectatorInventory {
 				break;
 			}
 
-			PlayerWrapper playerWrapper = (PlayerWrapper) player;
+			ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+			SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
 
-			ItemStack item = playerWrapper.getHead();
+			skullMeta.setOwner(player.getName());
+			item.setItemMeta(skullMeta);
+			
 			ChatColor color = null;
 
 			if(MinigameAPI.getInstance().getManager("teams") != null) {

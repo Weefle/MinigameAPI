@@ -196,9 +196,7 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void giveSpectatorItems(Player player, boolean isJoined) {
 		player.getInventory().setArmorContents(null);
-		if(isJoined) {
-			player.getInventory().setItem(0, new ItemBuilder(Material.COMPASS).setName("§7§oTeleporter").build());
-		}
+		player.getInventory().setItem(0, new ItemBuilder(Material.COMPASS).setName("§7§oTeleporter").build());
 		player.getInventory().setItem(8, new ItemBuilder(Material.MAGMA_CREAM).setName("§7Zurück zur §eLobby").build());
 		player.updateInventory();
 	}
