@@ -18,6 +18,8 @@ import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.messenger.Messenger;
+import com.florianwoelki.minigameapi.vote.event.PlayerVoteForMapEvent;
+import com.florianwoelki.minigameapi.vote.event.VotingEndEvent;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.ComponentBuilder;
@@ -104,10 +106,13 @@ public class VoteManager extends Manager {
 		Messenger.getInstance().spaceBroadcast("§c§oVoting ended!");
 		Messenger.getInstance().spaceBroadcast("§6Map: §3" + votedMap.getDisplayName());
 		Bukkit.broadcastMessage(" ");
+
+		Bukkit.getPluginManager().callEvent(new VotingEndEvent(votedMap));
 	}
 
 	public void voteMap(Player player, VoteMap voteMap) {
 		votes.put(player, voteMap);
+		Bukkit.getPluginManager().callEvent(new PlayerVoteForMapEvent(player, voteMap));
 	}
 
 	public VoteMap getMapWithMostVotes() {
