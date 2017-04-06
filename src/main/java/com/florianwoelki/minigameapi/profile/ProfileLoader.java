@@ -32,7 +32,7 @@ public class ProfileLoader extends BukkitRunnable {
 			PreparedStatement preparedStatement = databaseManager.getDatabase().prepare(INSERT);
 			preparedStatement.setString(1, profile.getUuid().toString());
 			preparedStatement.setString(2, profile.getName());
-			preparedStatement.setString(3, StringUtils.repeat("n", ((AchievementManager) MinigameAPI.getInstance().getManager("achievement")).getAchievementList().size()));
+			preparedStatement.setString(3, StringUtils.repeat("n", ((AchievementManager) MinigameAPI.getInstance().getManager("achievements")).getAchievementList().size()));
 			preparedStatement.setString(4, profile.getName());
 			preparedStatement.execute();
 
@@ -65,11 +65,11 @@ public class ProfileLoader extends BukkitRunnable {
 	private char[] getAchievements(ResultSet resultSet) throws SQLException {
 		char[] achieved = resultSet.getString("achievements").toCharArray();
 
-		if(achieved.length == ((AchievementManager) MinigameAPI.getInstance().getManager("achievement")).getAchievementList().size()) {
+		if(achieved.length == ((AchievementManager) MinigameAPI.getInstance().getManager("achievements")).getAchievementList().size()) {
 			return achieved;
 		}
 
-		char[] adjusted = StringUtils.repeat("n", ((AchievementManager) MinigameAPI.getInstance().getManager("achievement")).getAchievementList().size()).toCharArray();
+		char[] adjusted = StringUtils.repeat("n", ((AchievementManager) MinigameAPI.getInstance().getManager("achievements")).getAchievementList().size()).toCharArray();
 		System.arraycopy(achieved, 0, adjusted, 0, achieved.length);
 		return adjusted;
 	}
