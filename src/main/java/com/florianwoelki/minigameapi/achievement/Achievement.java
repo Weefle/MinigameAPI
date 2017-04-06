@@ -2,14 +2,11 @@ package com.florianwoelki.minigameapi.achievement;
 
 public class Achievement {
 
-	private AchievementHandler achievementHandler;
-
 	private int id;
 	private String name;
 	private String description;
 
-	public Achievement(AchievementHandler achievementHandler, int id, String name, String description) {
-		this.achievementHandler = achievementHandler;
+	public Achievement(int id, String name, String description) {
 		this.id = id;
 		this.name = name;
 		this.description = description;

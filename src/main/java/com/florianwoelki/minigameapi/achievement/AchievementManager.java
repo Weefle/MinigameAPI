@@ -8,18 +8,22 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
 import com.florianwoelki.minigameapi.client.Client;
 import com.florianwoelki.minigameapi.client.ClientManager;
 
-public class AchievementHandler {
-
-	private static AchievementHandler instance;
+public class AchievementManager extends Manager {
 
 	private List<Achievement> achievementList;
 
-	public AchievementHandler() {
+	@Override
+	public void onLoad() {
 		this.achievementList = new LinkedList<>();
+	}
+
+	@Override
+	public void onUnload() {
 	}
 
 	public void register(Achievement... achievements) {
@@ -45,13 +49,6 @@ public class AchievementHandler {
 
 	public List<Achievement> getAchievementList() {
 		return achievementList;
-	}
-
-	public static AchievementHandler getInstance() {
-		if(instance == null) {
-			instance = new AchievementHandler();
-		}
-		return instance;
 	}
 
 }

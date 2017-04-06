@@ -14,6 +14,7 @@ import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.florianwoelki.minigameapi.achievement.AchievementManager;
 import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
@@ -23,6 +24,7 @@ import com.florianwoelki.minigameapi.command.admin.CommandSetGameArea;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
 import com.florianwoelki.minigameapi.command.admin.CommandStart;
 import com.florianwoelki.minigameapi.command.admin.CommandWorldTeleport;
+import com.florianwoelki.minigameapi.command.user.CommandAchievements;
 import com.florianwoelki.minigameapi.command.user.CommandVoteMap;
 import com.florianwoelki.minigameapi.config.Config;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
@@ -126,6 +128,12 @@ public class MinigameAPI extends JavaPlugin {
 	public void enableDatabase() {
 		addManager("database", new DatabaseManager());
 		getServer().getPluginManager().registerEvents(new ClientListener(), this);
+	}
+
+	public void enableAchievements() {
+		AchievementManager achievementManager = new AchievementManager();
+		addManager("achievements", achievementManager);
+		commandHandler.register(CommandAchievements.class, new CommandAchievements(achievementManager));
 	}
 
 	public void enableTeams() {

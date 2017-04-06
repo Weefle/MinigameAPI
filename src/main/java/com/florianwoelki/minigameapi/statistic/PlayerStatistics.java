@@ -21,12 +21,12 @@ public class PlayerStatistics {
 	}
 
 	public <V> void set(StatisticObject<V> statisticObject) {
-		databaseManager.getDatabase().queryUpdate("UPDATE `" + database + "` SET `" + statisticObject.getName() + "` = '" + statisticObject.getValue() + "' WHERE `uuid` = '" + player.getUniqueId().toString() + "';");
+		databaseManager.getDatabase().getDatabase().queryUpdate("UPDATE `" + database + "` SET `" + statisticObject.getName() + "` = '" + statisticObject.getValue() + "' WHERE `uuid` = '" + player.getUniqueId().toString() + "';");
 	}
 
 	public StatisticObject<Object> getObject(String name) {
 		try {
-			ResultSet resultSet = databaseManager.getDatabase().query("SELECT `" + name + "` FROM `" + database + "` WHERE `uuid` = '" + player.getUniqueId().toString() + "';");
+			ResultSet resultSet = databaseManager.getDatabase().getDatabase().query("SELECT `" + name + "` FROM `" + database + "` WHERE `uuid` = '" + player.getUniqueId().toString() + "';");
 			while(resultSet.next()) {
 				Object object = resultSet.getObject(name);
 				return new StatisticObject<Object>(name, object);
