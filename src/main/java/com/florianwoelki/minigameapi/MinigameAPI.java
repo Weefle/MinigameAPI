@@ -18,7 +18,6 @@ import com.florianwoelki.minigameapi.achievement.AchievementManager;
 import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
-import com.florianwoelki.minigameapi.client.listener.ClientListener;
 import com.florianwoelki.minigameapi.command.CommandHandler;
 import com.florianwoelki.minigameapi.command.admin.CommandSetGameArea;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
@@ -34,6 +33,7 @@ import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.kit.Kit;
 import com.florianwoelki.minigameapi.kit.KitManager;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
+import com.florianwoelki.minigameapi.profile.ProfileManager;
 import com.florianwoelki.minigameapi.skill.Skill;
 import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
@@ -127,7 +127,8 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void enableDatabase() {
 		addManager("database", new DatabaseManager());
-		getServer().getPluginManager().registerEvents(new ClientListener(), this);
+
+		addManager("profile", new ProfileManager());
 	}
 
 	public void enableAchievements() {

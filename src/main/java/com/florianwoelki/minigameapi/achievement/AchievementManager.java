@@ -9,9 +9,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import com.florianwoelki.minigameapi.Manager;
+import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
-import com.florianwoelki.minigameapi.client.Client;
-import com.florianwoelki.minigameapi.client.ClientManager;
+import com.florianwoelki.minigameapi.profile.Profile;
+import com.florianwoelki.minigameapi.profile.ProfileManager;
 
 public class AchievementManager extends Manager {
 
@@ -33,11 +34,11 @@ public class AchievementManager extends Manager {
 	}
 
 	public void openInventory(Player player) {
-		Client client = ClientManager.getInstance().getClient(player);
+		Profile profile = ((ProfileManager) MinigameAPI.getInstance().getManager("profile")).getProfile(player);
 		Inventory inventory = Bukkit.createInventory(player, 27, "§c§lAchievements");
 
 		for(Achievement achievement : achievementList) {
-			if(client.hasAchievement(achievement)) {
+			if(profile.hasAchievement(achievement)) {
 				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).build());
 			} else {
 				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).build());

@@ -26,7 +26,7 @@ public class Database {
 		this.PASSWORD = ConfigData.password;
 
 		openConnection();
-		queryUpdate("CREATE TABLE IF NOT EXISTS clients (uuid VARCHAR(64), achievements VARCHAR(255));");
+		queryUpdate("CREATE TABLE IF NOT EXISTS clients (uuid VARCHAR(36), name VARCHAR(16), achievements TEXT, PRIMARY KEY uuid);");
 	}
 
 	public Connection openConnection() {
