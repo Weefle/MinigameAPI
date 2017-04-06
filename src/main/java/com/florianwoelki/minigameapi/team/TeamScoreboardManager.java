@@ -9,7 +9,7 @@ import org.bukkit.scoreboard.Scoreboard;
 
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
-import com.florianwoelki.minigameapi.event.PlayerSelectTeamEvent;
+import com.florianwoelki.minigameapi.team.event.PlayerSelectTeamEvent;
 
 public class TeamScoreboardManager extends Manager implements Listener {
 

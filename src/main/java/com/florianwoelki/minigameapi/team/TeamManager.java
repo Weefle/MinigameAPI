@@ -22,9 +22,9 @@ import org.bukkit.event.HandlerList;
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.api.StopReason;
-import com.florianwoelki.minigameapi.event.PlayerSelectTeamEvent;
 import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
+import com.florianwoelki.minigameapi.team.event.PlayerSelectTeamEvent;
 import com.florianwoelki.minigameapi.team.listener.TeamListener;
 import com.florianwoelki.minigameapi.util.BukkitUtils;
 

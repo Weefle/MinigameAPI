@@ -5,11 +5,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.achievement.AchievementManager;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
+import com.florianwoelki.minigameapi.profile.event.ProfileLoadedEvent;
 
 public class ProfileLoader extends BukkitRunnable {
 
@@ -48,6 +50,15 @@ public class ProfileLoader extends BukkitRunnable {
 			resultSet.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		}
+
+		if(profile.isLoaded()) {
+			new BukkitRunnable() {
+				@Override
+				public void run() {
+					Bukkit.getPluginManager().callEvent(new ProfileLoadedEvent(profile));
+				}
+			}.runTask(MinigameAPI.getInstance());
 		}
 	}
 

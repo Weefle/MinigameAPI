@@ -9,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.api.StopReason;
-import com.florianwoelki.minigameapi.event.SpectatorJoinEvent;
-import com.florianwoelki.minigameapi.event.SpectatorLeaveEvent;
+import com.florianwoelki.minigameapi.spectator.event.SpectatorJoinEvent;
+import com.florianwoelki.minigameapi.spectator.event.SpectatorLeaveEvent;
 
 public class SpectatorManager {
 

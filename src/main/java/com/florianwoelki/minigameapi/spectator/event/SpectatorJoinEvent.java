@@ -1,14 +1,14 @@
-package com.florianwoelki.minigameapi.event;
+package com.florianwoelki.minigameapi.spectator.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-public class SpectatorLeaveEvent extends PlayerEvent {
+public class SpectatorJoinEvent extends PlayerEvent {
 
 	private static final HandlerList handlers = new HandlerList();
 
-	public SpectatorLeaveEvent(Player player) {
+	public SpectatorJoinEvent(Player player) {
 		super(player);
 	}
 

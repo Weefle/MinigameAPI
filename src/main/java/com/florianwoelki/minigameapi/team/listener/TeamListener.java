@@ -16,10 +16,10 @@ import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
-import com.florianwoelki.minigameapi.event.SpectatorJoinEvent;
 import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
+import com.florianwoelki.minigameapi.spectator.event.SpectatorJoinEvent;
 import com.florianwoelki.minigameapi.team.Team;
 import com.florianwoelki.minigameapi.team.TeamManager;
 
@@ -139,10 +139,10 @@ public class TeamListener implements Listener {
 			event.setCancelled(true);
 		}
 	}
-	
+
 	@EventHandler
-    public void onSpectatorJoin(SpectatorJoinEvent event) {
-        manager.leavePlayer(event.getPlayer());
-    }
+	public void onSpectatorJoin(SpectatorJoinEvent event) {
+		manager.leavePlayer(event.getPlayer());
+	}
 
 }

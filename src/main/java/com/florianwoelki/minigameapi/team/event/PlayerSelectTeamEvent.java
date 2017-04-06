@@ -1,4 +1,4 @@
-package com.florianwoelki.minigameapi.event;
+package com.florianwoelki.minigameapi.team.event;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
