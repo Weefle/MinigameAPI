@@ -9,16 +9,17 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
+import com.florianwoelki.minigameapi.client.Client;
+import com.florianwoelki.minigameapi.client.ClientManager;
 
 public class AchievementHandler {
+
+	private static AchievementHandler instance;
 
 	private List<Achievement> achievementList;
 
 	public AchievementHandler() {
 		this.achievementList = new LinkedList<>();
-		for(AchievementType achievementType : AchievementType.values()) {
-			achievementList.add(new Achievement(this, achievementType));
-		}
 	}
 
 	public void register(Achievement... achievements) {
@@ -28,13 +29,14 @@ public class AchievementHandler {
 	}
 
 	public void openInventory(Player player) {
+		Client client = ClientManager.getInstance().getClient(player);
 		Inventory inventory = Bukkit.createInventory(player, 27, "§c§lAchievements");
 
 		for(Achievement achievement : achievementList) {
-			if(achievement.hasAchievement(player)) {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getAchievementType().getName()).build());
+			if(client.hasAchievement(achievement)) {
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).build());
 			} else {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getAchievementType().getName()).build());
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).build());
 			}
 		}
 
@@ -43,6 +45,13 @@ public class AchievementHandler {
 
 	public List<Achievement> getAchievementList() {
 		return achievementList;
+	}
+
+	public static AchievementHandler getInstance() {
+		if(instance == null) {
+			instance = new AchievementHandler();
+		}
+		return instance;
 	}
 
 }

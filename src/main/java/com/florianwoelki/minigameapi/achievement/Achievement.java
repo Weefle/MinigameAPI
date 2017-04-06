@@ -1,28 +1,30 @@
 package com.florianwoelki.minigameapi.achievement;
 
-import org.bukkit.entity.Player;
-
 public class Achievement {
 
 	private AchievementHandler achievementHandler;
 
-	private AchievementType achievementType;
+	private int id;
+	private String name;
+	private String description;
 
-	public Achievement(AchievementHandler achievementHandler, AchievementType achievementType) {
+	public Achievement(AchievementHandler achievementHandler, int id, String name, String description) {
 		this.achievementHandler = achievementHandler;
-		this.achievementType = achievementType;
+		this.id = id;
+		this.name = name;
+		this.description = description;
 	}
 
-	public boolean hasAchievement(Player player) {
-		return false;
+	public int getId() {
+		return id;
 	}
 
-	public void giveAchievement(Player player) {
-
+	public String getName() {
+		return name;
 	}
 
-	public AchievementType getAchievementType() {
-		return achievementType;
+	public String getDescription() {
+		return description;
 	}
 
 }

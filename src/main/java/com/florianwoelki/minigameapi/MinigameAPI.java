@@ -86,7 +86,6 @@ public class MinigameAPI extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new SpectatorListener(), this);
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
-		getServer().getPluginManager().registerEvents(new ClientListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
@@ -126,6 +125,7 @@ public class MinigameAPI extends JavaPlugin {
 
 	public void enableDatabase() {
 		addManager("database", new DatabaseManager());
+		getServer().getPluginManager().registerEvents(new ClientListener(), this);
 	}
 
 	public void enableTeams() {
