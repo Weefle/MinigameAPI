@@ -30,3 +30,4 @@ If you are posting a error, please provide this information above the error.
 - /setgamearea - Set the game area of the Minigame
 - /achievements - Open achievements inventory, if it is enabled
 - /votemap <mapname> - Vote for a map, if it is enabled
+- /start - Start the game
