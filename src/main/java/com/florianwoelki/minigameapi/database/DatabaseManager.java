@@ -1,22 +1,23 @@
 package com.florianwoelki.minigameapi.database;
 
 import com.florianwoelki.minigameapi.Manager;
+import com.florianwoelki.minigameapi.database.async.AsyncDatabase;
 
 public class DatabaseManager extends Manager {
 
-	private Database database;
+	private AsyncDatabase database;
 
 	@Override
 	public void onLoad() {
-		database = new Database();
+		database = new AsyncDatabase();
 	}
 
 	@Override
 	public void onUnload() {
-		database.closeConnection();
+		database.getDatabase().closeConnection();
 	}
 
-	public Database getDatabase() {
+	public AsyncDatabase getDatabase() {
 		return database;
 	}
 
