@@ -37,6 +37,16 @@ public class SkillManager extends Manager {
 		HandlerList.unregisterAll(skillListener);
 	}
 
+	public Skill getSkillByName(String skillName) {
+		for(Skill skill : skills) {
+			if(skill.getName().equalsIgnoreCase(skillName)) {
+				return skill;
+			}
+		}
+
+		return null;
+	}
+
 	public void addSkill(Skill skill) {
 		skills.add(skill);
 	}

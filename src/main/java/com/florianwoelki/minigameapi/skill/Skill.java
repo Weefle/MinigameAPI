@@ -1,10 +1,13 @@
 package com.florianwoelki.minigameapi.skill;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.metadata.FixedMetadataValue;
 
-import com.florianwoelki.minigameapi.player.PlayerData;
-import com.florianwoelki.minigameapi.player.PlayerWrapper;
+import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.skill.event.PlayerGiveSkillEvent;
 
 public abstract class Skill implements SkillAction {
@@ -22,10 +25,15 @@ public abstract class Skill implements SkillAction {
 	}
 
 	public void giveSkill(Player player) {
-		PlayerWrapper playerWrapper = (PlayerWrapper) player;
+		player.getInventory().addItem(getItemStack());
 
-		playerWrapper.getInventory().addItem(getItemStack());
-		playerWrapper.addMetadata("skill", new PlayerData<Skill>(this));
+		ItemStack item = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+		SkullMeta skullMeta = (SkullMeta) item.getItemMeta();
+
+		skullMeta.setOwner(player.getName());
+		item.setItemMeta(skullMeta);
+
+		player.setMetadata("skill", new FixedMetadataValue(MinigameAPI.getInstance(), name));
 		Bukkit.getPluginManager().callEvent(new PlayerGiveSkillEvent(player, this));
 	}
 

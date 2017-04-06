@@ -1,14 +1,14 @@
 package com.florianwoelki.minigameapi.skill.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.metadata.MetadataValue;
 
 import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
-import com.florianwoelki.minigameapi.player.PlayerData;
-import com.florianwoelki.minigameapi.player.PlayerWrapper;
 import com.florianwoelki.minigameapi.skill.Skill;
 import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.skill.event.PlayerUseSkillEvent;
@@ -23,14 +23,14 @@ public class SkillListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
-		PlayerWrapper playerWrapper = (PlayerWrapper) event.getPlayer();
+		Player player = event.getPlayer();
 
-		if(!playerWrapper.getPlayerMetadata().containsKey("skill")) {
+		if(!player.hasMetadata("skill")) {
 			return;
 		}
 
-		PlayerData<?> playerData = playerWrapper.getPlayerMetadata().get("skill");
-		Skill skill = (Skill) playerData.getData();
+		MetadataValue metadataValue = player.getMetadata("skill").get(0);
+		Skill skill = skillManager.getSkillByName(metadataValue.asString());
 
 		if(skill == null) {
 			return;
@@ -40,14 +40,14 @@ public class SkillListener implements Listener {
 			return;
 		}
 
-		if(skillManager.getCooldown().containsKey(playerWrapper.getUniqueId()) && System.currentTimeMillis() < skillManager.getCooldown().get(playerWrapper.getUniqueId())) {
-			Messenger.getInstance().message(playerWrapper, MessageType.BAD, "You are still on a cooldown!");
-			Bukkit.getPluginManager().callEvent(new PlayerUseSkillEvent(playerWrapper, skill, false));
+		if(skillManager.getCooldown().containsKey(player.getUniqueId()) && System.currentTimeMillis() < skillManager.getCooldown().get(player.getUniqueId())) {
+			Messenger.getInstance().message(player, MessageType.BAD, "You are still on a cooldown!");
+			Bukkit.getPluginManager().callEvent(new PlayerUseSkillEvent(player, skill, false));
 		} else {
 			skill.execute(event);
-			Bukkit.getPluginManager().callEvent(new PlayerUseSkillEvent(playerWrapper, skill, true));
+			Bukkit.getPluginManager().callEvent(new PlayerUseSkillEvent(player, skill, true));
 
-			skillManager.getCooldown().put(playerWrapper.getUniqueId(), System.currentTimeMillis() + skill.getCooldown() * 1000);
+			skillManager.getCooldown().put(player.getUniqueId(), System.currentTimeMillis() + skill.getCooldown() * 1000);
 		}
 	}
 

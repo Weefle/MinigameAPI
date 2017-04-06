@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
@@ -18,6 +17,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.api.util.ItemBuilder;
+import com.florianwoelki.minigameapi.client.listener.ClientListener;
 import com.florianwoelki.minigameapi.command.CommandHandler;
 import com.florianwoelki.minigameapi.command.admin.CommandSetGameArea;
 import com.florianwoelki.minigameapi.command.admin.CommandSetLobby;
@@ -32,7 +32,6 @@ import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.kit.Kit;
 import com.florianwoelki.minigameapi.kit.KitManager;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
-import com.florianwoelki.minigameapi.player.PlayerWrapper;
 import com.florianwoelki.minigameapi.skill.Skill;
 import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
@@ -87,6 +86,7 @@ public class MinigameAPI extends JavaPlugin {
 
 		getServer().getPluginManager().registerEvents(new SpectatorListener(), this);
 		getServer().getPluginManager().registerEvents(new LobbyListener(), this);
+		getServer().getPluginManager().registerEvents(new ClientListener(), this);
 		getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 	}
 
@@ -174,24 +174,6 @@ public class MinigameAPI extends JavaPlugin {
 			manager.onUnload();
 			MANAGERS.remove(name);
 		}
-	}
-
-	public PlayerWrapper getOnlinePlayer(String name) {
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getName().equalsIgnoreCase(name)) {
-				return (PlayerWrapper) onlinePlayer;
-			}
-		}
-		return null;
-	}
-
-	public PlayerWrapper getOnlinePlayer(UUID uuid) {
-		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-			if(onlinePlayer.getUniqueId().equals(onlinePlayer.getUniqueId())) {
-				return (PlayerWrapper) onlinePlayer;
-			}
-		}
-		return null;
 	}
 
 	public void giveSpectatorItems(Player player, boolean isJoined) {
