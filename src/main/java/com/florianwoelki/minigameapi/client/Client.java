@@ -2,7 +2,10 @@ package com.florianwoelki.minigameapi.client;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
+
 import com.florianwoelki.minigameapi.achievement.Achievement;
+import com.florianwoelki.minigameapi.achievement.event.PlayerAwardAchievementEvent;
 import com.florianwoelki.minigameapi.uuid.UUIDFetcher;
 
 public class Client {
@@ -29,6 +32,7 @@ public class Client {
 
 	public void awardAchievement(Achievement achievement) {
 		achievements[achievement.getId()] = 'a';
+		Bukkit.getPluginManager().callEvent(new PlayerAwardAchievementEvent(Bukkit.getPlayer(uuid), achievement));
 	}
 
 	public String getName() {
