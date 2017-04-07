@@ -10,8 +10,12 @@ import org.bukkit.entity.Player;
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
 
+/**
+ * The Class ProfileManager.
+ */
 public class ProfileManager extends Manager {
 
+	/** The profiles. */
 	private final Map<UUID, Profile> profiles = new HashMap<>();
 
 	@Override
@@ -44,10 +48,24 @@ public class ProfileManager extends Manager {
 		new ProfileSaver(profile).runTaskAsynchronously(MinigameAPI.getInstance());
 	}
 
+	/**
+	 * Gets the profile.
+	 *
+	 * @param player
+	 *            the player
+	 * @return the profile
+	 */
 	public Profile getProfile(Player player) {
 		return profiles.get(player.getUniqueId());
 	}
 
+	/**
+	 * Gets the removed profile.
+	 *
+	 * @param player
+	 *            the player
+	 * @return the removed profile
+	 */
 	public Profile getRemovedProfile(Player player) {
 		return profiles.remove(player.getUniqueId());
 	}

@@ -8,6 +8,9 @@ import java.sql.SQLException;
 
 import com.florianwoelki.minigameapi.config.ConfigData;
 
+/**
+ * The Class Database.
+ */
 public class Database {
 
 	private final String HOST;
@@ -18,6 +21,9 @@ public class Database {
 
 	private Connection connection;
 
+	/**
+	 * Instantiates a new database.
+	 */
 	public Database() {
 		this.HOST = ConfigData.host;
 		this.PORT = ConfigData.port;
@@ -29,6 +35,11 @@ public class Database {
 		queryUpdate("CREATE TABLE IF NOT EXISTS clients (uuid VARCHAR(36), name VARCHAR(16), achievements TEXT, PRIMARY KEY (uuid));");
 	}
 
+	/**
+	 * Open connection.
+	 *
+	 * @return the connection
+	 */
 	public Connection openConnection() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -39,6 +50,9 @@ public class Database {
 		return null;
 	}
 
+	/**
+	 * Close connection.
+	 */
 	public void closeConnection() {
 		try {
 			connection.close();
@@ -49,6 +63,12 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Query update.
+	 *
+	 * @param query
+	 *            the query
+	 */
 	public void queryUpdate(String query) {
 		checkConnection();
 		try(PreparedStatement statement = connection.prepareStatement(query)) {
@@ -58,6 +78,12 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Query update.
+	 *
+	 * @param statement
+	 *            the statement
+	 */
 	public void queryUpdate(PreparedStatement statement) {
 		checkConnection();
 		try {
@@ -73,6 +99,13 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Query.
+	 *
+	 * @param query
+	 *            the query
+	 * @return the result set
+	 */
 	public ResultSet query(String query) {
 		checkConnection();
 		try {
@@ -83,6 +116,13 @@ public class Database {
 		return null;
 	}
 
+	/**
+	 * Query.
+	 *
+	 * @param statement
+	 *            the statement
+	 * @return the result set
+	 */
 	public ResultSet query(PreparedStatement statement) {
 		checkConnection();
 		try {
@@ -93,6 +133,9 @@ public class Database {
 		return null;
 	}
 
+	/**
+	 * Check connection.
+	 */
 	private void checkConnection() {
 		try {
 			if(connection == null || !connection.isValid(10) || connection.isClosed()) {
@@ -103,6 +146,11 @@ public class Database {
 		}
 	}
 
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 */
 	public Connection getConnection() {
 		return connection;
 	}

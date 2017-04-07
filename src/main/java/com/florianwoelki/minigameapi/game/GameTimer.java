@@ -10,11 +10,18 @@ import com.florianwoelki.minigameapi.config.ConfigData;
 import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
 
+/**
+ * The Class GameTimer.
+ */
 public class GameTimer implements Runnable {
 
+	/** The is broadcasting messages. */
 	private boolean isBroadcastingMessages = true;
+
+	/** The time. */
 	private int time = -1;
 
+	/** The is finished. */
 	private boolean isFinished;
 
 	@Override
@@ -42,6 +49,9 @@ public class GameTimer implements Runnable {
 		}
 	}
 
+	/**
+	 * Reset time.
+	 */
 	public void resetTime() {
 		switch(MinigameAPI.getInstance().getGame().getGameState()) {
 		case INGAME:
@@ -63,6 +73,12 @@ public class GameTimer implements Runnable {
 		isBroadcastingMessages = true;
 	}
 
+	/**
+	 * Broadcast state.
+	 *
+	 * @param time
+	 *            the time
+	 */
 	public void broadcastState(int time) {
 		if(!isBroadcastingMessages) {
 			return;
@@ -95,6 +111,9 @@ public class GameTimer implements Runnable {
 		}
 	}
 
+	/**
+	 * Finish countdown.
+	 */
 	public void finishCountdown() {
 		switch(MinigameAPI.getInstance().getGame().getGameState()) {
 		case INGAME:
@@ -119,24 +138,52 @@ public class GameTimer implements Runnable {
 		}
 	}
 
+	/**
+	 * Play sound.
+	 *
+	 * @param sound
+	 *            the sound
+	 */
 	private void playSound(Sound sound) {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.playSound(onlinePlayer.getLocation(), sound, 1f, 1f);
 		}
 	}
 
+	/**
+	 * Sets the broadcasting messages.
+	 *
+	 * @param isBroadcastingMessages
+	 *            the new broadcasting messages
+	 */
 	public void setBroadcastingMessages(boolean isBroadcastingMessages) {
 		this.isBroadcastingMessages = isBroadcastingMessages;
 	}
 
+	/**
+	 * Checks if is broadcasting messages.
+	 *
+	 * @return true, if is broadcasting messages
+	 */
 	public boolean isBroadcastingMessages() {
 		return isBroadcastingMessages;
 	}
 
+	/**
+	 * Sets the time.
+	 *
+	 * @param time
+	 *            the new time
+	 */
 	public void setTime(int time) {
 		this.time = time;
 	}
 
+	/**
+	 * Gets the time.
+	 *
+	 * @return the time
+	 */
 	public int getTime() {
 		return time;
 	}

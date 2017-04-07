@@ -1,5 +1,8 @@
 package com.florianwoelki.minigameapi.config;
 
+/**
+ * This class represents the ConfigData
+ */
 public final class ConfigData {
 
 	public static int minimumPlayers = 6;

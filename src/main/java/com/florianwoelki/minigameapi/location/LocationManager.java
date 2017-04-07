@@ -11,18 +11,36 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 
+/**
+ * The Class LocationManager.
+ */
 public class LocationManager {
 
+	/** The instance. */
 	private static LocationManager instance;
 
+	/** The file. */
 	private File file;
+
+	/** The configuration. */
 	private FileConfiguration configuration;
 
+	/**
+	 * Instantiates a new location manager.
+	 */
 	public LocationManager() {
 		this.file = new File(MinigameAPI.getInstance().getDataFolder() + "/location", "locations.yml");
 		this.configuration = YamlConfiguration.loadConfiguration(file);
 	}
 
+	/**
+	 * Sets the block location.
+	 *
+	 * @param location
+	 *            the location
+	 * @param path
+	 *            the path
+	 */
 	public void setBlockLocation(Location location, String path) {
 		String world = location.getWorld().getName();
 		double x = location.getX();
@@ -34,6 +52,14 @@ public class LocationManager {
 		save();
 	}
 
+	/**
+	 * Sets the location.
+	 *
+	 * @param location
+	 *            the location
+	 * @param path
+	 *            the path
+	 */
 	public void setLocation(Location location, String path) {
 		String world = location.getWorld().getName();
 		double x = location.getX();
@@ -47,6 +73,13 @@ public class LocationManager {
 		save();
 	}
 
+	/**
+	 * Gets the block location.
+	 *
+	 * @param path
+	 *            the path
+	 * @return the block location
+	 */
 	public Location getBlockLocation(String path) {
 		String locationString = configuration.getString(path);
 		World world = Bukkit.getWorld(locationString.split(",")[0]);
@@ -56,6 +89,13 @@ public class LocationManager {
 		return new Location(world, x, y, z);
 	}
 
+	/**
+	 * Gets the location.
+	 *
+	 * @param path
+	 *            the path
+	 * @return the location
+	 */
 	public Location getLocation(String path) {
 		if(configuration.getString(path) != null) {
 			String locationString = configuration.getString(path);
@@ -70,6 +110,15 @@ public class LocationManager {
 		return null;
 	}
 
+	/**
+	 * Checks if is inside location.
+	 *
+	 * @param location
+	 *            the location
+	 * @param path
+	 *            the path
+	 * @return true, if is inside location
+	 */
 	public boolean isInsideLocation(Location location, String path) {
 		Location loc1 = getBlockLocation(path + ".Pos1");
 		Location loc2 = getBlockLocation(path + ".Pos2");
@@ -92,6 +141,9 @@ public class LocationManager {
 		return false;
 	}
 
+	/**
+	 * Save.
+	 */
 	public void save() {
 		try {
 			configuration.save(file);
@@ -100,10 +152,20 @@ public class LocationManager {
 		}
 	}
 
+	/**
+	 * Gets the configuration.
+	 *
+	 * @return the configuration
+	 */
 	public FileConfiguration getConfiguration() {
 		return configuration;
 	}
 
+	/**
+	 * Gets the single instance of LocationManager.
+	 *
+	 * @return single instance of LocationManager
+	 */
 	public static LocationManager getInstance() {
 		if(instance == null) {
 			instance = new LocationManager();

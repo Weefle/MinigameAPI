@@ -13,14 +13,29 @@ import com.florianwoelki.minigameapi.achievement.AchievementManager;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
 import com.florianwoelki.minigameapi.profile.event.ProfileLoadedEvent;
 
+/**
+ * The Class ProfileLoader.
+ */
 public class ProfileLoader extends BukkitRunnable {
 
+	/** The Constant INSERT. */
 	private static final String INSERT = "INSERT INTO clients VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE name = ?;";
+
+	/** The Constant SELECT. */
 	private static final String SELECT = "SELECT achievements FROM clients WHERE uuid = ?;";
 
+	/** The profile. */
 	private Profile profile;
+
+	/** The database manager. */
 	private DatabaseManager databaseManager;
 
+	/**
+	 * Instantiates a new profile loader.
+	 *
+	 * @param profile
+	 *            the profile
+	 */
 	public ProfileLoader(Profile profile) {
 		this.profile = profile;
 		this.databaseManager = (DatabaseManager) MinigameAPI.getInstance().getManager("database");
@@ -62,6 +77,15 @@ public class ProfileLoader extends BukkitRunnable {
 		}
 	}
 
+	/**
+	 * Gets the achievements.
+	 *
+	 * @param resultSet
+	 *            the result set
+	 * @return the achievements
+	 * @throws SQLException
+	 *             the SQL exception
+	 */
 	private char[] getAchievements(ResultSet resultSet) throws SQLException {
 		char[] achieved = resultSet.getString("achievements").toCharArray();
 

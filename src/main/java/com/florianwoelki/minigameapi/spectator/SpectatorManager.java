@@ -12,12 +12,25 @@ import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.spectator.event.SpectatorJoinEvent;
 import com.florianwoelki.minigameapi.spectator.event.SpectatorLeaveEvent;
 
+/**
+ * The Class SpectatorManager.
+ */
 public class SpectatorManager {
 
+	/** The Constant SPECTATORS. */
 	private static final List<Player> SPECTATORS = new ArrayList<>();
 
+	/** The spectator inventory. */
 	private static SpectatorInventory spectatorInventory = new SpectatorInventory();;
 
+	/**
+	 * Join spectator.
+	 *
+	 * @param player
+	 *            the player
+	 * @param isJoined
+	 *            the is joined
+	 */
 	public static void joinSpectator(Player player, boolean isJoined) {
 		if(SPECTATORS.contains(player)) {
 			return;
@@ -49,6 +62,12 @@ public class SpectatorManager {
 		Bukkit.getPluginManager().callEvent(new SpectatorJoinEvent(player));
 	}
 
+	/**
+	 * Leave spectator.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	public static void leaveSpectator(Player player) {
 		if(!SPECTATORS.contains(player)) {
 			return;
@@ -72,14 +91,31 @@ public class SpectatorManager {
 		Bukkit.getPluginManager().callEvent(new SpectatorLeaveEvent(player));
 	}
 
+	/**
+	 * Checks if is spectator.
+	 *
+	 * @param player
+	 *            the player
+	 * @return true, if is spectator
+	 */
 	public static boolean isSpectator(Player player) {
 		return SPECTATORS.contains(player);
 	}
 
+	/**
+	 * Gets the spectator inventory.
+	 *
+	 * @return the spectator inventory
+	 */
 	public static SpectatorInventory getSpectatorInventory() {
 		return spectatorInventory;
 	}
 
+	/**
+	 * Gets the spectators.
+	 *
+	 * @return the spectators
+	 */
 	public static List<Player> getSpectators() {
 		return SPECTATORS;
 	}

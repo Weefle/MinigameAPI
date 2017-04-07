@@ -13,13 +13,26 @@ import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.skill.listener.SkillListener;
 
+/**
+ * The Class SkillManager.
+ */
 public class SkillManager extends Manager {
 
+	/** The skills. */
 	private final List<Skill> skills = new ArrayList<>();
+
+	/** The cooldown. */
 	private final Map<UUID, Long> cooldown = new HashMap<>();
 
+	/** The skill listener. */
 	private SkillListener skillListener;
 
+	/**
+	 * Instantiates a new skill manager.
+	 *
+	 * @param skills
+	 *            the skills
+	 */
 	public SkillManager(Skill... skills) {
 		this.skillListener = new SkillListener(this);
 		for(Skill skill : skills) {
@@ -37,6 +50,13 @@ public class SkillManager extends Manager {
 		HandlerList.unregisterAll(skillListener);
 	}
 
+	/**
+	 * Gets the skill by name.
+	 *
+	 * @param skillName
+	 *            the skill name
+	 * @return the skill by name
+	 */
 	public Skill getSkillByName(String skillName) {
 		for(Skill skill : skills) {
 			if(skill.getName().equalsIgnoreCase(skillName)) {
@@ -47,14 +67,30 @@ public class SkillManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Adds the skill.
+	 *
+	 * @param skill
+	 *            the skill
+	 */
 	public void addSkill(Skill skill) {
 		skills.add(skill);
 	}
 
+	/**
+	 * Gets the skills.
+	 *
+	 * @return the skills
+	 */
 	public List<Skill> getSkills() {
 		return skills;
 	}
 
+	/**
+	 * Gets the cooldown.
+	 *
+	 * @return the cooldown
+	 */
 	public Map<UUID, Long> getCooldown() {
 		return cooldown;
 	}

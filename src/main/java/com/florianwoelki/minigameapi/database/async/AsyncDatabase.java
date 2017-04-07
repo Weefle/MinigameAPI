@@ -8,16 +8,28 @@ import java.util.concurrent.Executors;
 
 import com.florianwoelki.minigameapi.database.Database;
 
+/**
+ * The Class AsyncDatabase.
+ */
 public class AsyncDatabase {
 
 	private ExecutorService executor;
 	private Database database;
 
+	/**
+	 * Instantiates a new async database.
+	 */
 	public AsyncDatabase() {
 		this.executor = Executors.newCachedThreadPool();
 		this.database = new Database();
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param statement
+	 *            the statement
+	 */
 	public void update(final PreparedStatement statement) {
 		executor.execute(new Runnable() {
 			@Override
@@ -27,6 +39,12 @@ public class AsyncDatabase {
 		});
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param statement
+	 *            the statement
+	 */
 	public void update(final String statement) {
 		executor.execute(new Runnable() {
 			@Override
@@ -36,6 +54,14 @@ public class AsyncDatabase {
 		});
 	}
 
+	/**
+	 * Query.
+	 *
+	 * @param statement
+	 *            the statement
+	 * @param consumer
+	 *            the consumer
+	 */
 	public void query(final PreparedStatement statement, final Consumer<ResultSet> consumer) {
 		executor.execute(new Runnable() {
 			@Override
@@ -45,6 +71,14 @@ public class AsyncDatabase {
 		});
 	}
 
+	/**
+	 * Query.
+	 *
+	 * @param statement
+	 *            the statement
+	 * @param consumer
+	 *            the consumer
+	 */
 	public void query(final String statement, final Consumer<ResultSet> consumer) {
 		executor.execute(new Runnable() {
 			@Override
@@ -54,6 +88,13 @@ public class AsyncDatabase {
 		});
 	}
 
+	/**
+	 * Prepare.
+	 *
+	 * @param query
+	 *            the query
+	 * @return the prepared statement
+	 */
 	public PreparedStatement prepare(String query) {
 		try {
 			return database.getConnection().prepareStatement(query);
@@ -63,6 +104,11 @@ public class AsyncDatabase {
 		return null;
 	}
 
+	/**
+	 * Gets the database.
+	 *
+	 * @return the database
+	 */
 	public Database getDatabase() {
 		return database;
 	}

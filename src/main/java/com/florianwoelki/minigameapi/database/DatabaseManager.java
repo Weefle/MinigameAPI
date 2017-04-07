@@ -3,6 +3,11 @@ package com.florianwoelki.minigameapi.database;
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.database.async.AsyncDatabase;
 
+/**
+ * The Class DatabaseManager.
+ * 
+ * This class needs to be registered in your main class.
+ */
 public class DatabaseManager extends Manager {
 
 	private AsyncDatabase database;
@@ -17,6 +22,11 @@ public class DatabaseManager extends Manager {
 		database.getDatabase().closeConnection();
 	}
 
+	/**
+	 * Gets the database.
+	 *
+	 * @return the database
+	 */
 	public AsyncDatabase getDatabase() {
 		return database;
 	}

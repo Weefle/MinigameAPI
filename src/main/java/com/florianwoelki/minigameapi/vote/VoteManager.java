@@ -26,6 +26,11 @@ import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
+/**
+ * This class represents a vote manager
+ * 
+ * This needs to be activated in your man class first
+ */
 public class VoteManager extends Manager {
 
 	private final List<VoteMap> maps = new ArrayList<>();
@@ -72,6 +77,12 @@ public class VoteManager extends Manager {
 		votedMap.getWorld().setAutoSave(false);
 	}
 
+	/**
+	 * Send the voting messages to a specific player
+	 * 
+	 * @param player
+	 *            Player who will receive the voting messages
+	 */
 	public void sendVoting(Player player) {
 		player.sendMessage("§m--------- §6§l Map Vote §7§m----------");
 		player.sendMessage("§r");
@@ -90,6 +101,9 @@ public class VoteManager extends Manager {
 		player.playSound(player.getLocation(), Sound.ORB_PICKUP, 1f, 1f);
 	}
 
+	/**
+	 * This method finish the voting
+	 */
 	public void finishVoting() {
 		if(MinigameAPI.getInstance().getGame().getGameState() != GameState.LOBBY) {
 			return;
@@ -110,11 +124,24 @@ public class VoteManager extends Manager {
 		Bukkit.getPluginManager().callEvent(new VotingEndEvent(votedMap));
 	}
 
+	/**
+	 * With this method a player will vote for a specific map
+	 * 
+	 * @param player
+	 *            Player who will vote for a map
+	 * @param voteMap
+	 *            VoteMap which the player will vote for
+	 */
 	public void voteMap(Player player, VoteMap voteMap) {
 		votes.put(player, voteMap);
 		Bukkit.getPluginManager().callEvent(new PlayerVoteForMapEvent(player, voteMap));
 	}
 
+	/**
+	 * Get the map with the most votes
+	 * 
+	 * @return VoteMap which has the most votes
+	 */
 	public VoteMap getMapWithMostVotes() {
 		List<VoteMap> availableMaps = new ArrayList<>();
 		availableMaps.addAll(maps);
@@ -132,6 +159,13 @@ public class VoteManager extends Manager {
 		return bestMap;
 	}
 
+	/**
+	 * Get the votes of a specific map
+	 * 
+	 * @param voteMap
+	 *            VoteMap for getting the votes
+	 * @return Integer votes for the map
+	 */
 	public int getVotes(VoteMap voteMap) {
 		int votes = 0;
 		for(VoteMap map : this.votes.values()) {
@@ -142,6 +176,9 @@ public class VoteManager extends Manager {
 		return votes;
 	}
 
+	/**
+	 * This method load all the maps which are loaded in the maps.yml file
+	 */
 	private void loadMaps() {
 		maps.clear();
 
@@ -183,6 +220,13 @@ public class VoteManager extends Manager {
 		}
 	}
 
+	/**
+	 * With this method you can get a map by its name
+	 * 
+	 * @param mapName
+	 *            String mapName for getting the VoteMap
+	 * @return VoteMap, specified with the mapName
+	 */
 	public VoteMap getMapByName(String mapName) {
 		for(VoteMap voteMap : maps) {
 			if(voteMap.getDisplayName().equalsIgnoreCase(mapName)) {
@@ -192,26 +236,59 @@ public class VoteManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Check if a player has voted
+	 * 
+	 * @param player
+	 *            Player who has(n't) voted
+	 * @return Boolean if the player has voted
+	 */
 	public boolean hasVoted(Player player) {
 		return votes.containsKey(player);
 	}
 
+	/**
+	 * Remove the vote for a specific player
+	 * 
+	 * @param player
+	 *            Player for removing the vote
+	 */
 	public void removeVote(Player player) {
 		votes.remove(player);
 	}
 
+	/**
+	 * Get the VoteListener
+	 * 
+	 * @return VoteListener
+	 */
 	public VoteListener getVoteListener() {
 		return voteListener;
 	}
 
+	/**
+	 * Get the VoteMap
+	 * 
+	 * @return VoteMap which has won the vote
+	 */
 	public VoteMap getVotedMap() {
 		return votedMap;
 	}
 
+	/**
+	 * Get all the votes
+	 * 
+	 * @return Map<Player, VoteMap>
+	 */
 	public Map<Player, VoteMap> getVotes() {
 		return votes;
 	}
 
+	/**
+	 * Check if the voting is enabled
+	 * 
+	 * @return Boolean if the voting is enabled
+	 */
 	public boolean isVotingEnabled() {
 		return isVotingEnabled;
 	}

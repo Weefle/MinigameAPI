@@ -16,11 +16,20 @@ import org.bukkit.inventory.meta.SkullMeta;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.team.TeamManager;
 
+/**
+ * The Class SpectatorInventory.
+ */
 public class SpectatorInventory {
 
+	/** The inv. */
 	private final Inventory inv;
+
+	/** The players. */
 	private final Map<Integer, Player> players = new HashMap<>();
 
+	/**
+	 * Instantiates a new spectator inventory.
+	 */
 	public SpectatorInventory() {
 		int slots = 9;
 		while(slots < Bukkit.getMaxPlayers()) {
@@ -32,6 +41,9 @@ public class SpectatorInventory {
 		inv = Bukkit.createInventory(null, slots, "§8Spectator");
 	}
 
+	/**
+	 * Update inventory.
+	 */
 	public void updateInventory() {
 		players.clear();
 		inv.clear();
@@ -47,7 +59,7 @@ public class SpectatorInventory {
 
 			skullMeta.setOwner(player.getName());
 			item.setItemMeta(skullMeta);
-			
+
 			ChatColor color = null;
 
 			if(MinigameAPI.getInstance().getManager("teams") != null) {
@@ -65,6 +77,14 @@ public class SpectatorInventory {
 		}
 	}
 
+	/**
+	 * Update health.
+	 *
+	 * @param player
+	 *            the player
+	 * @param health
+	 *            the health
+	 */
 	public void updateHealth(Player player, double health) {
 		Integer slot = getSlotFromPlayer(player);
 
@@ -79,6 +99,13 @@ public class SpectatorInventory {
 		inv.setItem(slot.intValue(), item);
 	}
 
+	/**
+	 * Gets the health string.
+	 *
+	 * @param health
+	 *            the health
+	 * @return the health string
+	 */
 	public String getHealthString(double health) {
 		int h = (int) Math.round(health);
 		h /= 2;
@@ -95,6 +122,13 @@ public class SpectatorInventory {
 		return builder.toString();
 	}
 
+	/**
+	 * Gets the slot from player.
+	 *
+	 * @param player
+	 *            the player
+	 * @return the slot from player
+	 */
 	public Integer getSlotFromPlayer(Player player) {
 		for(Map.Entry<Integer, Player> e : players.entrySet()) {
 			if(e.getValue() == player) {
@@ -105,10 +139,22 @@ public class SpectatorInventory {
 		return null;
 	}
 
+	/**
+	 * Gets the player from slot.
+	 *
+	 * @param slot
+	 *            the slot
+	 * @return the player from slot
+	 */
 	public Player getPlayerFromSlot(int slot) {
 		return (Player) players.get(Integer.valueOf(slot));
 	}
 
+	/**
+	 * Gets the inventory.
+	 *
+	 * @return the inventory
+	 */
 	public Inventory getInventory() {
 		return inv;
 	}

@@ -28,13 +28,21 @@ import com.florianwoelki.minigameapi.team.event.PlayerSelectTeamEvent;
 import com.florianwoelki.minigameapi.team.listener.TeamListener;
 import com.florianwoelki.minigameapi.util.BukkitUtils;
 
+/**
+ * The Class TeamManager.
+ */
 public class TeamManager extends Manager {
 
+	/** The teams. */
 	private final List<Team> teams = new ArrayList<>();
+
+	/** The team size. */
 	private int teamSize;
 
+	/** The listener. */
 	private TeamListener listener;
 
+	/** The player team map. */
 	private final Map<Player, Team> playerTeamMap = new HashMap<>();
 
 	@Override
@@ -53,6 +61,12 @@ public class TeamManager extends Manager {
 		}
 	}
 
+	/**
+	 * Leave player.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	public void leavePlayer(Player player) {
 		setTeam(player, null);
 
@@ -61,10 +75,16 @@ public class TeamManager extends Manager {
 		}
 	}
 
+	/**
+	 * Start game.
+	 */
 	public void startGame() {
 		assignTeams();
 	}
 
+	/**
+	 * Assign teams.
+	 */
 	public void assignTeams() {
 		List<Player> playersWithNoTeams = new ArrayList<>();
 		playersWithNoTeams.addAll(MinigameAPI.getInstance().getIngamePlayers());
@@ -123,6 +143,9 @@ public class TeamManager extends Manager {
 		}
 	}
 
+	/**
+	 * Load config.
+	 */
 	public void loadConfig() {
 		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(MinigameAPI.getInstance().getDataFolder(), "teams.yml"));
 		for(String teamName : config.getKeys(false)) {
@@ -161,6 +184,11 @@ public class TeamManager extends Manager {
 		}
 	}
 
+	/**
+	 * Gets the team with lowest members.
+	 *
+	 * @return the team with lowest members
+	 */
 	public Team getTeamWithLowestMembers() {
 		int lowestCount = Integer.MAX_VALUE;
 		Team lowestTeam = null;
@@ -179,6 +207,11 @@ public class TeamManager extends Manager {
 		return lowestTeam;
 	}
 
+	/**
+	 * Gets the teams with players.
+	 *
+	 * @return the teams with players
+	 */
 	public List<Team> getTeamsWithPlayers() {
 		List<Team> teamsWithPlayers = new ArrayList<>();
 		for(Team team : teams) {
@@ -190,6 +223,13 @@ public class TeamManager extends Manager {
 		return teamsWithPlayers;
 	}
 
+	/**
+	 * Gets the team from armor stand.
+	 *
+	 * @param armorStand
+	 *            the armor stand
+	 * @return the team from armor stand
+	 */
 	public Team getTeamFromArmorStand(ArmorStand armorStand) {
 		for(Team team : teams) {
 			if(team.getCurrentArmorStand() != null && team.getCurrentArmorStand().equals(armorStand)) {
@@ -200,6 +240,13 @@ public class TeamManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Gets the players in team.
+	 *
+	 * @param team
+	 *            the team
+	 * @return the players in team
+	 */
 	public List<Player> getPlayersInTeam(Team team) {
 		List<Player> players = new ArrayList<>();
 		for(Map.Entry<Player, Team> e : playerTeamMap.entrySet()) {
@@ -211,10 +258,25 @@ public class TeamManager extends Manager {
 		return players;
 	}
 
+	/**
+	 * Gets the team from player.
+	 *
+	 * @param player
+	 *            the player
+	 * @return the team from player
+	 */
 	public Team getTeamFromPlayer(Player player) {
 		return (Team) playerTeamMap.get(player);
 	}
 
+	/**
+	 * Sets the team.
+	 *
+	 * @param player
+	 *            the player
+	 * @param team
+	 *            the team
+	 */
 	public void setTeam(Player player, Team team) {
 		Team oldTeam = getTeamFromPlayer(player);
 		if(oldTeam != null) {
@@ -231,6 +293,13 @@ public class TeamManager extends Manager {
 		Bukkit.getPluginManager().callEvent(new PlayerSelectTeamEvent(player, oldTeam, team));
 	}
 
+	/**
+	 * Gets the team.
+	 *
+	 * @param name
+	 *            the name
+	 * @return the team
+	 */
 	public Team getTeam(String name) {
 		for(Team team : teams) {
 			if(team.getName().equals(name)) {
@@ -241,6 +310,13 @@ public class TeamManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Gets the team.
+	 *
+	 * @param color
+	 *            the color
+	 * @return the team
+	 */
 	public Team getTeam(Color color) {
 		for(Team team : teams) {
 			if(team.getColor() == color) {
@@ -251,18 +327,40 @@ public class TeamManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Gets the teams.
+	 *
+	 * @return the teams
+	 */
 	public List<Team> getTeams() {
 		return teams;
 	}
 
+	/**
+	 * Gets the listener.
+	 *
+	 * @return the listener
+	 */
 	public TeamListener getListener() {
 		return listener;
 	}
 
+	/**
+	 * Gets the team size.
+	 *
+	 * @return the team size
+	 */
 	public int getTeamSize() {
 		return teamSize;
 	}
 
+	/**
+	 * Face to yaw.
+	 *
+	 * @param blockFace
+	 *            the block face
+	 * @return the float
+	 */
 	public static float faceToYaw(BlockFace blockFace) {
 		switch(blockFace) {
 		case NORTH:

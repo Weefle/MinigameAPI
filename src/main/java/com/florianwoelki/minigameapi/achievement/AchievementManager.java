@@ -14,6 +14,11 @@ import com.florianwoelki.minigameapi.api.util.ItemBuilder;
 import com.florianwoelki.minigameapi.profile.Profile;
 import com.florianwoelki.minigameapi.profile.ProfileManager;
 
+/**
+ * This class represents a AchievementManager and it extends from the Manager class.
+ * 
+ * This class needs to be enabled in your main class.
+ */
 public class AchievementManager extends Manager {
 
 	private List<Achievement> achievementList;
@@ -27,27 +32,45 @@ public class AchievementManager extends Manager {
 	public void onUnload() {
 	}
 
+	/**
+	 * Register some achievements.
+	 *
+	 * @param achievements
+	 *            the achievements
+	 */
 	public void register(Achievement... achievements) {
 		for(Achievement achievement : achievements) {
 			achievementList.add(achievement);
 		}
 	}
 
+	/**
+	 * Open inventory with all given achievements.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	public void openInventory(Player player) {
 		Profile profile = ((ProfileManager) MinigameAPI.getInstance().getManager("profile")).getProfile(player);
 		Inventory inventory = Bukkit.createInventory(player, 27, "§c§lAchievements");
 
+		// Construct the inventory
 		for(Achievement achievement : achievementList) {
 			if(profile.hasAchievement(achievement)) {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).build());
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).build()); // Green Clay
 			} else {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).build());
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).build()); // Red Clay
 			}
 		}
 
 		player.openInventory(inventory);
 	}
 
+	/**
+	 * Gets the achievement list.
+	 *
+	 * @return the achievement list
+	 */
 	public List<Achievement> getAchievementList() {
 		return achievementList;
 	}

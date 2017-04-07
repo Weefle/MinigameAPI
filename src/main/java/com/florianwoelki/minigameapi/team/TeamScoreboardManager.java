@@ -11,8 +11,12 @@ import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.team.event.PlayerSelectTeamEvent;
 
+/**
+ * The Class TeamScoreboardManager.
+ */
 public class TeamScoreboardManager extends Manager implements Listener {
 
+	/** The scoreboard. */
 	private Scoreboard scoreboard;
 
 	@Override
@@ -36,6 +40,12 @@ public class TeamScoreboardManager extends Manager implements Listener {
 		HandlerList.unregisterAll(this);
 	}
 
+	/**
+	 * Leave player.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	@SuppressWarnings("deprecation")
 	public void leavePlayer(Player player) {
 		org.bukkit.scoreboard.Team team = scoreboard.getPlayerTeam(player);
@@ -45,6 +55,12 @@ public class TeamScoreboardManager extends Manager implements Listener {
 		}
 	}
 
+	/**
+	 * On player select team.
+	 *
+	 * @param event
+	 *            the event
+	 */
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void onPlayerSelectTeam(PlayerSelectTeamEvent event) {
@@ -58,6 +74,11 @@ public class TeamScoreboardManager extends Manager implements Listener {
 		scoreboard.getTeam(event.getTeam().getName()).addPlayer(player);
 	}
 
+	/**
+	 * Gets the scoreboard.
+	 *
+	 * @return the scoreboard
+	 */
 	public Scoreboard getScoreboard() {
 		return this.scoreboard;
 	}

@@ -10,20 +10,46 @@ import org.bukkit.metadata.FixedMetadataValue;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.skill.event.PlayerGiveSkillEvent;
 
+/**
+ * The Class Skill.
+ */
 public abstract class Skill implements SkillAction {
 
+	/** The name. */
 	protected String name;
+
+	/** The cooldown. */
 	protected int cooldown;
 
+	/**
+	 * Instantiates a new skill.
+	 *
+	 * @param name
+	 *            the name
+	 */
 	public Skill(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Instantiates a new skill.
+	 *
+	 * @param name
+	 *            the name
+	 * @param cooldown
+	 *            the cooldown
+	 */
 	public Skill(String name, int cooldown) {
 		this.name = name;
 		this.cooldown = cooldown;
 	}
 
+	/**
+	 * Give skill.
+	 *
+	 * @param player
+	 *            the player
+	 */
 	public void giveSkill(Player player) {
 		player.getInventory().addItem(getItemStack());
 
@@ -37,10 +63,20 @@ public abstract class Skill implements SkillAction {
 		Bukkit.getPluginManager().callEvent(new PlayerGiveSkillEvent(player, this));
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Gets the cooldown.
+	 *
+	 * @return the cooldown
+	 */
 	public int getCooldown() {
 		return cooldown;
 	}

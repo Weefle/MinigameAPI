@@ -11,14 +11,24 @@ import com.florianwoelki.minigameapi.config.ConfigData;
 import com.florianwoelki.minigameapi.messenger.MessageType;
 import com.florianwoelki.minigameapi.messenger.Messenger;
 
+/**
+ * The Class Game.
+ */
 public class Game {
 
+	/** The game state. */
 	private GameState gameState;
 
+	/**
+	 * Instantiates a new game.
+	 */
 	public Game() {
 		this.gameState = GameState.LOBBY_WITH_NOY_PLAYERS;
 	}
 
+	/**
+	 * Start lobby phase.
+	 */
 	public void startLobbyPhase() {
 		if(gameState != GameState.LOBBY_WITH_NOY_PLAYERS) {
 			return;
@@ -38,10 +48,19 @@ public class Game {
 		Bukkit.broadcastMessage(" ");
 	}
 
+	/**
+	 * Start game.
+	 */
 	public void startGame() {
 		startGame(false);
 	}
 
+	/**
+	 * Start game.
+	 *
+	 * @param isForceStart
+	 *            the is force start
+	 */
 	public void startGame(boolean isForceStart) {
 		if(gameState == GameState.INGAME) {
 			return;
@@ -68,6 +87,12 @@ public class Game {
 		MinigameAPI.getInstance().getMinigame().startGame();
 	}
 
+	/**
+	 * Stop game.
+	 *
+	 * @param stopReason
+	 *            the stop reason
+	 */
 	public void stopGame(StopReason stopReason) {
 		if(gameState != GameState.INGAME) {
 			return;
@@ -80,6 +105,9 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Do shutdown.
+	 */
 	public void doShutdown() {
 		for(Player onlinePlayer : Bukkit.getOnlinePlayers()) {
 			onlinePlayer.kickPlayer("§cServer is restarting...");
@@ -93,6 +121,12 @@ public class Game {
 		}, 100l);
 	}
 
+	/**
+	 * Sets the game state.
+	 *
+	 * @param gameState
+	 *            the new game state
+	 */
 	public void setGameState(GameState gameState) {
 		this.gameState = gameState;
 		if(gameState.equals(GameState.LOBBY) || gameState.equals(GameState.LOBBY_WITH_NOY_PLAYERS)) {
@@ -104,10 +138,20 @@ public class Game {
 		}
 	}
 
+	/**
+	 * Checks if is game started.
+	 *
+	 * @return true, if is game started
+	 */
 	public boolean isGameStarted() {
 		return gameState == GameState.INGAME;
 	}
 
+	/**
+	 * Gets the game state.
+	 *
+	 * @return the game state
+	 */
 	public GameState getGameState() {
 		return gameState;
 	}
