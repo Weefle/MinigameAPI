@@ -34,6 +34,8 @@ import com.florianwoelki.minigameapi.kit.Kit;
 import com.florianwoelki.minigameapi.kit.KitManager;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.profile.ProfileManager;
+import com.florianwoelki.minigameapi.rang.Rang;
+import com.florianwoelki.minigameapi.rang.RangManager;
 import com.florianwoelki.minigameapi.skill.Skill;
 import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
@@ -132,6 +134,27 @@ public class MinigameAPI extends JavaPlugin {
 		}
 
 		this.minigame = minigame;
+	}
+
+	/**
+	 * Enable rangs.
+	 *
+	 * @param database
+	 *            the database
+	 */
+	public void enableRangs(String database) {
+		addManager("rang_system", new RangManager(database));
+	}
+
+	/**
+	 * Adds the rang.
+	 *
+	 * @param rang
+	 *            the rang
+	 */
+	public void addRang(Rang rang) {
+		RangManager rangManager = (RangManager) getManager("rang_system");
+		rangManager.getRangs().add(rang);
 	}
 
 	/**
