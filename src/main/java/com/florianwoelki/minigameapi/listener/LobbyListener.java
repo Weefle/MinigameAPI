@@ -3,6 +3,7 @@ package com.florianwoelki.minigameapi.listener;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -35,6 +36,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.florianwoelki.minigameapi.Manager;
 import com.florianwoelki.minigameapi.MinigameAPI;
+import com.florianwoelki.minigameapi.achievement.AchievementManager;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.minigameapi.config.ConfigData;
 import com.florianwoelki.minigameapi.game.GameState;
@@ -373,7 +375,7 @@ public class LobbyListener implements Listener {
 	}
 
 	@EventHandler
-	public void onPlayerInteractMagmaCream(PlayerInteractEvent event) {
+	public void onPlayerInteractLobbyItems(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
 		ItemStack item = event.getItem();
 
@@ -384,6 +386,9 @@ public class LobbyListener implements Listener {
 		if(event.getAction() != Action.PHYSICAL && item != null && !MinigameAPI.getInstance().getGame().isGameStarted()) {
 			if(item.getType() == Material.MAGMA_CREAM) {
 				player.kickPlayer("");
+			} else if(item.getType() == Material.WRITTEN_BOOK) {
+				((AchievementManager) MinigameAPI.getInstance().getManager("achievements")).openInventory(player);
+				player.playSound(player.getLocation(), Sound.CHEST_OPEN, 1f, 1f);
 			}
 		}
 	}
