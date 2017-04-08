@@ -3,10 +3,12 @@ package com.florianwoelki.minigameapi.profile;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.database.DatabaseManager;
+import com.florianwoelki.minigameapi.profile.event.ProfileSaveEvent;
 
 /**
  * The Class ProfileSaver.
@@ -44,6 +46,8 @@ public class ProfileSaver extends BukkitRunnable {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
+
+		Bukkit.getPluginManager().callEvent(new ProfileSaveEvent(profile));
 	}
 
 }
