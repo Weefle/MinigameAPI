@@ -57,9 +57,9 @@ public class AchievementManager extends Manager {
 		// Construct the inventory
 		for(Achievement achievement : achievementList) {
 			if(profile.hasAchievement(achievement)) {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).build()); // Green Clay
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 13).setName("§a" + achievement.getName()).setLore("§r", "§bDescription", "§7" + achievement.getDescription()).build()); // Green Clay
 			} else {
-				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).build()); // Red Clay
+				inventory.addItem(new ItemBuilder(Material.STAINED_CLAY, 1, (byte) 14).setName("§c" + achievement.getName()).setLore("§r", "§bDescription", "§7" + achievement.getDescription()).build()); // Red Clay
 			}
 		}
 
