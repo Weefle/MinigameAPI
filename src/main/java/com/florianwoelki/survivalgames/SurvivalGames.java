@@ -16,6 +16,8 @@ public class SurvivalGames extends JavaPlugin implements Minigame {
 		MinigameAPI.getInstance().setBlockChangesEnabled(true);
 		MinigameAPI.getInstance().setAllowSpectatorDeath(true);
 		MinigameAPI.getInstance().enableMapVoting();
+		MinigameAPI.getInstance().enableEnchantHack();
+		MinigameAPI.getInstance().enableDefaultScoreboard();
 	}
 	
 	@Override

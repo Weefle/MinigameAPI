@@ -250,6 +250,15 @@ public class MinigameAPI extends JavaPlugin {
 	}
 
 	/**
+	 * Gets the spectators.
+	 *
+	 * @return the spectators
+	 */
+	public List<Player> getSpectators() {
+		return SpectatorManager.getSpectators();
+	}
+
+	/**
 	 * Request map.
 	 *
 	 * @param mapName
