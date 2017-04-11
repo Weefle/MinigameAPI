@@ -37,6 +37,7 @@ import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.profile.ProfileManager;
 import com.florianwoelki.minigameapi.rang.Rang;
 import com.florianwoelki.minigameapi.rang.RangManager;
+import com.florianwoelki.minigameapi.scoreboard.ScoreboardManager;
 import com.florianwoelki.minigameapi.skill.Skill;
 import com.florianwoelki.minigameapi.skill.SkillManager;
 import com.florianwoelki.minigameapi.spectator.SpectatorListener;
@@ -136,7 +137,7 @@ public class MinigameAPI extends JavaPlugin {
 
 		this.minigame = minigame;
 	}
-	
+
 	/**
 	 * Enable enchant hack.
 	 */
@@ -217,6 +218,13 @@ public class MinigameAPI extends JavaPlugin {
 	 */
 	public void enableTeams() {
 		addManager("teams", new TeamManager());
+	}
+
+	/**
+	 * Enable default scoreboard.
+	 */
+	public void enableDefaultScoreboard() {
+		addManager("default_scoreboard", new ScoreboardManager());
 	}
 
 	/**
