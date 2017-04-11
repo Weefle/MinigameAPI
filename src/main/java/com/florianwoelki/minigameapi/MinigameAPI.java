@@ -32,6 +32,7 @@ import com.florianwoelki.minigameapi.game.GameState;
 import com.florianwoelki.minigameapi.game.GameTimer;
 import com.florianwoelki.minigameapi.kit.Kit;
 import com.florianwoelki.minigameapi.kit.KitManager;
+import com.florianwoelki.minigameapi.listener.EnchantHackListener;
 import com.florianwoelki.minigameapi.listener.LobbyListener;
 import com.florianwoelki.minigameapi.profile.ProfileManager;
 import com.florianwoelki.minigameapi.rang.Rang;
@@ -134,6 +135,13 @@ public class MinigameAPI extends JavaPlugin {
 		}
 
 		this.minigame = minigame;
+	}
+	
+	/**
+	 * Enable enchant hack.
+	 */
+	public void enableEnchantHack() {
+		Bukkit.getPluginManager().registerEvents(new EnchantHackListener(), this);
 	}
 
 	/**
