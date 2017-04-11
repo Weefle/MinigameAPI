@@ -2,6 +2,7 @@ package com.florianwoelki.minigameapi.profile;
 
 import java.util.UUID;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.florianwoelki.minigameapi.achievement.Achievement;
@@ -53,6 +54,11 @@ public class Profile {
 	 */
 	public void awardAchievement(Achievement achievement) {
 		achievements[achievement.getId()] = 'd';
+
+		Player player = Bukkit.getPlayer(uuid);
+		player.sendMessage("§4§k===========================================");
+		player.sendMessage("§6You got the achievement §a§l" + achievement.getName());
+		player.sendMessage("§4§k===========================================");
 	}
 
 	/**
