@@ -13,6 +13,7 @@ local.properties
 .classpath
 .project
 target
+.DS_Store
 
 # Locally stored "Eclipse launch configurations"
 *.launch
