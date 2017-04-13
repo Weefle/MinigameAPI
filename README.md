@@ -23,6 +23,8 @@ If you are posting a error, please provide this information above the error.
 - Map Voting
 - Kits
 - Skills
+- Profiles
+- Example Minigames
 
 ## Commands
 - /setlobby - Set the Lobby for the Minigame
