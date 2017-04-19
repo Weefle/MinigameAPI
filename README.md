@@ -23,6 +23,9 @@ If you are posting a error, please provide this information above the error.
 - Map Voting
 - Kits
 - Skills
+- Profiles
+- Example Minigames
+- Scoreboard
 
 ## Commands
 - /setlobby - Set the Lobby for the Minigame
@@ -31,3 +34,7 @@ If you are posting a error, please provide this information above the error.
 - /achievements - Open achievements inventory, if it is enabled
 - /votemap <mapname> - Vote for a map, if it is enabled
 - /start - Start the game
+
+## Minigames
+- OITC (finished)
+- SurvivalGames
