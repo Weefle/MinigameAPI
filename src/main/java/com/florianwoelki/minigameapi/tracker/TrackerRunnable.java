@@ -6,22 +6,40 @@ import org.bukkit.entity.Player;
 import com.florianwoelki.minigameapi.MinigameAPI;
 import com.florianwoelki.minigameapi.api.util.ActionBar;
 
+/**
+ * The Class TrackerRunnable.
+ */
 public class TrackerRunnable implements Runnable {
 
+	/** The task id. */
 	private int taskId = -1;
 	
+	/** The tracker item. */
 	private TrackerItem trackerItem;
+	
+	/** The action bar. */
 	private ActionBar actionBar;
 	
+	/**
+	 * Instantiates a new tracker runnable.
+	 *
+	 * @param trackerItem the tracker item
+	 */
 	public TrackerRunnable(TrackerItem trackerItem) {
 		this.trackerItem = trackerItem;
 		this.actionBar = new ActionBar();
 	}
 
+	/**
+	 * Start.
+	 */
 	public void start() {
 		taskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(MinigameAPI.getInstance(), this, 0l, 5l);
 	}
 	
+	/**
+	 * Cancel.
+	 */
 	public void cancel() {
 		Bukkit.getScheduler().cancelTask(taskId);
 		taskId = -1;
@@ -49,6 +67,12 @@ public class TrackerRunnable implements Runnable {
 		}
 	}
 	
+	/**
+	 * Gets the distance.
+	 *
+	 * @param player the player
+	 * @return the distance
+	 */
 	public int getDistance(Player player) {
 		Player target = trackerItem.getPlayerTracker().get(player);
 		if(MinigameAPI.getInstance().getSpectators().contains(target)) {
@@ -62,6 +86,11 @@ public class TrackerRunnable implements Runnable {
 		return (int) Math.round(player.getLocation().distance(target.getLocation()));
 	}
 	
+	/**
+	 * Gets the task id.
+	 *
+	 * @return the task id
+	 */
 	public int getTaskId() {
 		return taskId;
 	}
