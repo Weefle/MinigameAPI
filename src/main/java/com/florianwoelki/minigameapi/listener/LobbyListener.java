@@ -46,8 +46,24 @@ import com.florianwoelki.minigameapi.messenger.Messenger;
 import com.florianwoelki.minigameapi.spectator.SpectatorManager;
 import com.florianwoelki.minigameapi.util.ActionBarBroadcaster;
 
+/**
+ * The listener interface for receiving lobby events.
+ * The class that is interested in processing a lobby
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addLobbyListener<code> method. When
+ * the lobby event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see LobbyEvent
+ */
 public class LobbyListener implements Listener {
 
+	/**
+	 * On player move.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerMove(PlayerMoveEvent event) {
 		if(event.getTo().getY() < 0) {
@@ -66,6 +82,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player join.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerJoin(PlayerJoinEvent event) {
 		Player player = event.getPlayer();
@@ -117,6 +138,11 @@ public class LobbyListener implements Listener {
 		event.setJoinMessage(Messenger.getInstance().getPrefix() + "§7" + player.getDisplayName() + " §ejoined the server. §8(§a" + Bukkit.getOnlinePlayers().size() + "§8/§a" + Bukkit.getMaxPlayers() + "§8)");
 	}
 
+	/**
+	 * On player quit.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.MONITOR)
 	public void onPlayerQuit(PlayerQuitEvent event) {
 		Player player = event.getPlayer();
@@ -150,11 +176,21 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player kick.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerKick(PlayerKickEvent event) {
 		event.setLeaveMessage(null);
 	}
 
+	/**
+	 * On player respawn.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player player = event.getPlayer();
@@ -168,6 +204,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On block break.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player player = event.getPlayer();
@@ -181,6 +222,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On block place.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -194,6 +240,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On entity explode.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onEntityExplode(EntityExplodeEvent event) {
 		if(!MinigameAPI.getInstance().getGame().isGameStarted() || !MinigameAPI.getInstance().isBlockChangesEnabled()) {
@@ -201,6 +252,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player interact entity.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		if(!event.getRightClicked().getType().equals(EntityType.ITEM_FRAME)) {
@@ -218,6 +274,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On hanging break by entity.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
 		if(event.isCancelled() || !(event.getRemover() instanceof Player)) {
@@ -235,6 +296,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On hanging place.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onHangingPlace(HangingPlaceEvent event) {
 		Player player = event.getPlayer();
@@ -248,6 +314,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On teleport.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onTeleport(PlayerTeleportEvent event) {
 		if(SpectatorManager.isSpectator(event.getPlayer())) {
@@ -255,6 +326,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On world change.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onWorldChange(PlayerChangedWorldEvent event) {
 		if(SpectatorManager.isSpectator(event.getPlayer())) {
@@ -262,6 +338,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On entity damage.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onEntityDamage(EntityDamageEvent event) {
 		if(event.isCancelled()) {
@@ -294,6 +375,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player drop item.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerDropItem(PlayerDropItemEvent event) {
 		Player player = event.getPlayer();
@@ -307,6 +393,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player pickup item.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onPlayerPickupItem(PlayerPickupItemEvent event) {
 		Player player = event.getPlayer();
@@ -320,6 +411,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On entity interact.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onEntityInteract(EntityInteractEvent event) {
 		if(!MinigameAPI.getInstance().isBlockChangesEnabled() && !event.getEntityType().equals(EntityType.PLAYER) && event.getBlock().getType().equals(Material.SOIL)) {
@@ -327,6 +423,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On food level change.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler(priority = EventPriority.LOW)
 	public void onFoodLevelChange(FoodLevelChangeEvent event) {
 		if(event.isCancelled() || !(event.getEntity() instanceof Player)) {
@@ -340,11 +441,21 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On weather change.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onWeatherChange(WeatherChangeEvent event) {
 		event.setCancelled(true);
 	}
 
+	/**
+	 * On player move item.
+	 *
+	 * @param event the event
+	 */
 	@SuppressWarnings("incomplete-switch")
 	@EventHandler
 	public void onPlayerMoveItem(InventoryClickEvent event) {
@@ -374,6 +485,11 @@ public class LobbyListener implements Listener {
 		event.setCancelled(true);
 	}
 
+	/**
+	 * On player interact lobby items.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerInteractLobbyItems(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -393,6 +509,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * On player interact.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player player = event.getPlayer();
@@ -418,6 +539,11 @@ public class LobbyListener implements Listener {
 		}
 	}
 
+	/**
+	 * No uproot.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void noUproot(PlayerInteractEvent event) {
 		if(event.getAction().equals(Action.PHYSICAL) && event.getClickedBlock().getType().equals(Material.SOIL)) {

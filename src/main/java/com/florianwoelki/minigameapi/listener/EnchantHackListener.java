@@ -16,8 +16,24 @@ import org.bukkit.inventory.ItemStack;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
 
+/**
+ * The listener interface for receiving enchantHack events.
+ * The class that is interested in processing a enchantHack
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addEnchantHackListener<code> method. When
+ * the enchantHack event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see EnchantHackEvent
+ */
 public class EnchantHackListener implements Listener {
 
+	/**
+	 * On inventory open.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		if(event.isCancelled() || !MinigameAPI.getInstance().getGame().isGameStarted()) {
@@ -35,6 +51,11 @@ public class EnchantHackListener implements Listener {
 		}
 	}
 
+	/**
+	 * On inventory click.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		if(event.isCancelled() || !MinigameAPI.getInstance().getGame().isGameStarted()) {
@@ -52,6 +73,11 @@ public class EnchantHackListener implements Listener {
 		}
 	}
 
+	/**
+	 * On inventory close.
+	 *
+	 * @param event the event
+	 */
 	@EventHandler
 	public void onInventoryClose(InventoryCloseEvent event) {
 		if(!MinigameAPI.getInstance().getGame().isGameStarted()) {
@@ -69,6 +95,11 @@ public class EnchantHackListener implements Listener {
 		}
 	}
 
+	/**
+	 * Reset enchant seed.
+	 *
+	 * @param player the player
+	 */
 	private void resetEnchantSeed(Player player) {
 		try {
 			String version = org.bukkit.Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
