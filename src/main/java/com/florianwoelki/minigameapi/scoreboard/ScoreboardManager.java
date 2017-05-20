@@ -23,7 +23,10 @@ public class ScoreboardManager extends Manager {
 	/** The scoreboard. */
 	private Scoreboard scoreboard;
 
+	/** The groups. */
 	private final LinkedList<ScoreboardGroup> groups = new LinkedList<>();
+	
+	/** The group cache. */
 	private final Map<Player, ScoreboardGroup> groupCache = new HashMap<>();
 
 	@Override
@@ -79,6 +82,12 @@ public class ScoreboardManager extends Manager {
 		groupCache.remove(player);
 	}
 
+	/**
+	 * Gets the scoreboard group.
+	 *
+	 * @param player the player
+	 * @return the scoreboard group
+	 */
 	public ScoreboardGroup getScoreboardGroup(Player player) {
 		for(ScoreboardGroup group : groups) {
 			if(player.hasPermission(group.getPermission())) {
@@ -89,14 +98,30 @@ public class ScoreboardManager extends Manager {
 		return null;
 	}
 
+	/**
+	 * Gets the cached scoreboard group.
+	 *
+	 * @param player the player
+	 * @return the cached scoreboard group
+	 */
 	public ScoreboardGroup getCachedScoreboardGroup(Player player) {
 		return groupCache.get(player);
 	}
 
+	/**
+	 * Adds the scoreboard group.
+	 *
+	 * @param scoreboardGroup the scoreboard group
+	 */
 	public void addScoreboardGroup(ScoreboardGroup scoreboardGroup) {
 		groups.add(scoreboardGroup);
 	}
 
+	/**
+	 * Gets the groups.
+	 *
+	 * @return the groups
+	 */
 	public List<ScoreboardGroup> getGroups() {
 		return groups;
 	}
