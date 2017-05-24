@@ -1,6 +1,10 @@
 package com.florianwoelki.survivalgames;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.florianwoelki.minigameapi.MinigameAPI;
@@ -10,14 +14,21 @@ import com.florianwoelki.minigameapi.api.Minigame;
 import com.florianwoelki.minigameapi.api.StopReason;
 import com.florianwoelki.survivalgames.command.CommandList;
 import com.florianwoelki.survivalgames.command.CommandRefill;
+import com.florianwoelki.survivalgames.listener.ChestListener;
 import com.florianwoelki.survivalgames.listener.WorldListener;
 
 public class SurvivalGames extends JavaPlugin implements Minigame {
 
+	private static SurvivalGames instance;
+	
+	private final Map<String, Inventory> usedChests = new HashMap<>();
+	
 	private AchievementManager achievementManager;
 
 	@Override
 	public void onEnable() {
+		instance = this;
+		
 		MinigameAPI.getInstance().initializeMinigame(this);
 		MinigameAPI.getInstance().setMinigameName("SurvivalGames");
 		MinigameAPI.getInstance().setChatPrefix("SurvivalGames");
@@ -31,6 +42,7 @@ public class SurvivalGames extends JavaPlugin implements Minigame {
 		MinigameAPI.getInstance().getCommandHandler().register(CommandRefill.class, new CommandRefill());
 
 		Bukkit.getPluginManager().registerEvents(new WorldListener(), this);
+		Bukkit.getPluginManager().registerEvents(new ChestListener(), this);
 
 		achievementManager = (AchievementManager) MinigameAPI.getInstance().getManager("achievements");
 		achievementManager.register(new Achievement(0, "Fighter", "Kill 9 players in one round"));
@@ -53,6 +65,14 @@ public class SurvivalGames extends JavaPlugin implements Minigame {
 
 	public AchievementManager getAchievementManager() {
 		return achievementManager;
+	}
+	
+	public Map<String, Inventory> getUsedChests() {
+		return usedChests;
+	}
+	
+	public static SurvivalGames getInstance() {
+		return instance;
 	}
 
 }
